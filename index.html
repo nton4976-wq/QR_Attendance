@@ -7,7 +7,7 @@
 <title>TIME Attendance</title>
 <link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -452,7 +452,7 @@ html,body{
 .error-toast{position:fixed;top:calc(16px + var(--safe-top));left:50%;transform:translateX(-50%) translateY(-160%);background:var(--danger);color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(231,76,107,.35);z-index:300;transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:min(92%,380px);text-align:center;line-height:1.4}
 .error-toast.active{transform:translateX(-50%) translateY(0)}
 
-/* ===== QR Scanner Overlay ===== */
+/* ===== QR Scanner Overlay (Yearbook Only) ===== */
 .qr-overlay{position:fixed;inset:0;background:rgba(10,10,20,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:250;padding:20px}
 .qr-overlay.active{display:flex !important}
 .scanner-close{position:absolute;top:calc(14px + var(--safe-top));right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:background .2s}
@@ -466,6 +466,45 @@ html,body{
 #qr-reader{width:100%;height:100%}
 .scanner-label{color:rgba(255,255,255,.75);margin-top:18px;font-size:13px;text-align:center;font-weight:500}
 .scanner-error{color:#ff6b6b;margin-top:8px;font-size:12px;text-align:center;min-height:18px;font-weight:500}
+
+/* ===== Location Check-In Styles ===== */
+/* ===== QR Scanner Overlay (Yearbook Only) ===== */
+.qr-overlay{position:fixed;inset:0;background:rgba(10,10,20,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:250;padding:20px}
+.qr-overlay.active{display:flex !important}
+.scanner-close{position:absolute;top:calc(14px + var(--safe-top));right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:background .2s}
+.scanner-close:active{background:rgba(255,255,255,.25)}
+.scanner-container{position:relative;width:min(88vw,300px);aspect-ratio:1/1;border-radius:20px;overflow:hidden;box-shadow:0 0 0 2px rgba(255,255,255,.1)}
+.scanner-corner{position:absolute;width:28px;height:28px;border-color:var(--primary);border-style:solid;z-index:5;pointer-events:none}
+.scanner-corner.tl{top:0;left:0;border-width:4px 0 0 4px}
+.scanner-corner.tr{top:0;right:0;border-width:4px 4px 0 0}
+.scanner-corner.bl{bottom:0;left:0;border-width:0 0 4px 4px}
+.scanner-corner.br{bottom:0;right:0;border-width:0 4px 4px 0}
+#qr-reader{width:100%;height:100%}
+.scanner-label{color:rgba(255,255,255,.75);margin-top:18px;font-size:13px;text-align:center;font-weight:500}
+.scanner-error{color:#ff6b6b;margin-top:8px;font-size:12px;text-align:center;min-height:18px;font-weight:500}
+
+/* ===== Location Check-In Styles ===== */
+.location-check-overlay{position:fixed;inset:0;background:rgba(10,10,20,.92);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:250;padding:20px}
+.location-check-overlay.active{display:flex !important}
+.location-check-card{background:#fff;border-radius:24px;padding:28px 24px;width:min(100%,340px);text-align:center;box-shadow:var(--shadow-lg);animation:popIn .35s cubic-bezier(.34,1.56,.64,1)}
+.location-check-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:#fff;box-shadow:0 6px 20px rgba(26,155,138,.25)}
+.location-check-icon svg{width:30px;height:30px}
+.location-check-title{font-size:18px;font-weight:700;color:var(--text-dark);margin-bottom:8px}
+.location-check-desc{font-size:13px;color:var(--text-medium);margin-bottom:20px;line-height:1.5}
+.location-check-status{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;margin-bottom:16px}
+.location-check-status.verifying{background:rgba(26,155,138,.08);color:var(--primary)}
+.location-check-status.success{background:rgba(39,174,96,.1);color:var(--success)}
+.location-check-status.error{background:rgba(231,76,107,.1);color:var(--danger)}
+.location-check-status svg{width:18px;height:18px}
+.location-check-spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+.location-check-btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(26,155,138,.25);transition:transform .15s,box-shadow .15s;margin-top:8px}
+.location-check-btn:active{transform:scale(.97)}
+.location-check-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.location-check-btn.secondary{background:var(--white);color:var(--text-dark);border:1.5px solid var(--border);box-shadow:none}
+.location-check-details{text-align:left;background:var(--bg);border-radius:14px;padding:14px 16px;margin-top:14px;font-size:12px;color:var(--text-medium);line-height:1.8}
+.location-check-details strong{color:var(--text-dark);font-weight:600}
+.location-check-close{position:absolute;top:calc(14px + var(--safe-top));right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:background .2s}
+.location-check-close:active{background:rgba(255,255,255,.25)}
 
 /* ===== Success Modal ===== */
 .success-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:260;padding:20px;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
@@ -561,8 +600,8 @@ html,body{
 .day-cell.late-day::after{background:var(--warning)}
 .day-cell.overtime-day::after{background:var(--secondary)}
 .attendance-list{padding:0 16px calc(100px + var(--safe-bottom))}
-.list-header{display:grid;grid-template-columns:60px 60px 50px 50px 50px 50px 36px;gap:4px;padding:10px 0;font-size:9px;font-weight:600;color:var(--text-light);text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:5;text-transform:uppercase;letter-spacing:.5px}
-.list-row{display:grid;grid-template-columns:60px 60px 50px 50px 50px 50px 36px;gap:4px;padding:12px 0;font-size:11px;color:var(--text-dark);text-align:center;align-items:center;border-bottom:1px solid var(--border)}
+.list-header{display:grid;grid-template-columns:60px 60px 50px 50px 50px 50px 50px 36px;gap:4px;padding:10px 0;font-size:9px;font-weight:600;color:var(--text-light);text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:5;text-transform:uppercase;letter-spacing:.5px}
+.list-row{display:grid;grid-template-columns:60px 60px 50px 50px 50px 50px 50px 36px;gap:4px;padding:12px 0;font-size:11px;color:var(--text-dark);text-align:center;align-items:center;border-bottom:1px solid var(--border)}
 .list-row .status{font-size:10px;font-weight:600;padding:3px 8px;border-radius:8px;display:inline-block}
 .list-row .status.present{background:rgba(39,174,96,.1);color:var(--success)}
 .list-row .status.late{background:rgba(243,156,18,.1);color:var(--warning)}
@@ -1732,7 +1771,1596 @@ html,body{
   padding: 18px;
   box-shadow: var(--shadow);
 }
-</style>
+
+/* ===== Yearbook redesigned hero + grouped cards ===== */
+.yb-hero{
+  position:relative;
+  border-radius:22px;
+  padding:20px 18px;
+  color:#fff;
+  overflow:hidden;
+  box-shadow:0 10px 28px -14px rgba(26,155,138,.55);
+  margin-bottom:16px;
+}
+.yb-hero.authorize{background:linear-gradient(135deg,#1a9b8a 0%,#2db5a3 60%,#7b8cde 130%);}
+.yb-hero.owner{background:linear-gradient(135deg,#5b6bd6 0%,#7b8cde 55%,#2db5a3 130%);}
+.yb-hero::after{
+  content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;
+  background:rgba(255,255,255,.12);pointer-events:none;
+}
+.yb-hero-row{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.yb-hero-badge{
+  width:52px;height:52px;border-radius:16px;
+  background:rgba(255,255,255,.18);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.yb-hero-title{font-size:17px;font-weight:700;line-height:1.2;}
+.yb-hero-sub{font-size:12px;opacity:.85;margin-top:3px;line-height:1.4;}
+.yb-hero-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:12px;padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.18);font-size:11px;font-weight:600;
+  position:relative;z-index:1;
+}
+
+.yb-card{
+  background:var(--white);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:14px;
+}
+.yb-card-title{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;color:var(--text-dark);
+  margin-bottom:2px;
+}
+.yb-card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+.yb-card.owner .yb-card-title .dot{background:var(--secondary);}
+
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content,
+#yearbook-clients-screen .sub-content{
+  display:block;padding:16px;
+}
+#yearbook-authorize-screen .yearbook-form,
+#yearbook-owner-screen .yearbook-form{
+  max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
+}
+/* override the old generic form-section card styling so our new grouped cards control the look */
+#yearbook-authorize-screen .form-section,
+#yearbook-owner-screen .form-section{
+  background:transparent;box-shadow:none;padding:0;border-radius:0;
+}
+
+/* ===== Office Survey QR display (replaces scan button) ===== */
+.yb-qr-display{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:16px;border-radius:16px;
+  background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);
+  border:1px solid var(--border);
+}
+.yb-qr-frame{
+  position:relative;width:180px;height:180px;padding:10px;border-radius:18px;
+  background:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.2);
+}
+.yb-qr-frame img{width:100%;height:100%;display:block;border-radius:8px;}
+.yb-qr-corner{position:absolute;width:18px;height:18px;border:3px solid var(--primary);}
+.yb-qr-corner.tl{top:-2px;left:-2px;border-right:none;border-bottom:none;border-top-left-radius:8px;}
+.yb-qr-corner.tr{top:-2px;right:-2px;border-left:none;border-bottom:none;border-top-right-radius:8px;}
+.yb-qr-corner.bl{bottom:-2px;left:-2px;border-right:none;border-top:none;border-bottom-left-radius:8px;}
+.yb-qr-corner.br{bottom:-2px;right:-2px;border-left:none;border-top:none;border-bottom-right-radius:8px;}
+.yb-qr-caption{font-size:11px;color:var(--text-medium);text-align:center;line-height:1.4;max-width:240px;}
+
+/* ===== Clients list ===== */
+.yb-clients-toolbar{
+  display:flex;gap:8px;align-items:center;margin-bottom:12px;
+}
+.yb-clients-search{
+  flex:1;height:42px;border-radius:14px;border:1px solid var(--border);
+  background:var(--white);padding:0 14px;font-family:inherit;font-size:13px;color:var(--text-dark);
+  outline:none;transition:border-color .15s;
+}
+.yb-clients-search:focus{border-color:var(--primary);}
+.yb-filter-chip{
+  padding:8px 12px;border-radius:12px;border:1px solid var(--border);
+  background:var(--white);font-size:12px;font-weight:600;color:var(--text-medium);
+  cursor:pointer;font-family:inherit;white-space:nowrap;
+}
+.yb-filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.yb-clients-list{display:flex;flex-direction:column;gap:10px;}
+.yb-client-card{
+  display:flex;align-items:center;gap:12px;padding:12px;
+  background:var(--white);border-radius:16px;box-shadow:var(--shadow);
+}
+.yb-client-thumb{
+  width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,#1a9b8a,#7b8cde);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;overflow:hidden;
+}
+.yb-client-thumb img{width:100%;height:100%;object-fit:cover;}
+.yb-client-info{flex:1;min-width:0;}
+.yb-client-name{font-size:14px;font-weight:600;color:var(--text-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.yb-client-meta{font-size:11px;color:var(--text-medium);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.yb-tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;}
+.yb-tag.authorize{background:rgba(26,155,138,.12);color:var(--primary);}
+.yb-tag.owner{background:rgba(123,140,222,.15);color:var(--secondary);}
+.yb-empty{
+  text-align:center;padding:40px 20px;color:var(--text-medium);
+}
+.yb-empty svg{opacity:.4;margin-bottom:10px;}
+
+/* Client detail modal */
+.yb-detail-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1500;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.yb-detail-overlay.active{display:flex;animation:fadeIn .2s ease;}
+.yb-detail-sheet{
+  width:100%;max-width:430px;background:var(--white);border-radius:24px 24px 0 0;
+  padding:18px 18px calc(20px + var(--safe-bottom));max-height:85vh;overflow-y:auto;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.yb-detail-handle{width:44px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 14px;}
+.yb-detail-photo{width:100%;border-radius:16px;margin-bottom:14px;display:block;}
+.yb-detail-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.yb-detail-row:last-child{border-bottom:none;}
+.yb-detail-row .k{color:var(--text-medium);font-weight:500;}
+.yb-detail-row .v{color:var(--text-dark);font-weight:600;text-align:right;word-break:break-word;}
+
+
+
+/* ===== RESPONSIVENESS & MOBILE FIXES ===== */
+html, body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent iOS zoom on input focus */
+.form-input, .form-select, .chat-input-area input, .yb-clients-search, .team-search input, #act-input-title, #act-input-desc, #act-input-date, #yb-auth-person, #yb-auth-owner, #yb-auth-batch, #yb-owner-name, #yb-owner-batch, #login-email, #login-password, #signup-firstname, #signup-middlename, #signup-lastname, #signup-email, #signup-password, #update-name, #update-email, #update-phone, #update-title, #update-dept, #current-password, #new-password, #confirm-password, #feedback-subject, #feedback-body {
+  font-size: 16px;
+}
+
+/* Better touch targets */
+button, .nav-item, .chat-item, .act-check, .yearbook-option-btn, .yb-photo-box, .yb-client-card, .menu-item, .chat-user-avatar-wrap, .back-btn, .edit-btn, .act-del, .day-detail-close, .scanner-close, .location-check-close, .yb-camera-close, .yb-camera-flip, .yb-capture-btn, .act-cat-opt, .yb-filter-chip, .cal-nav-btn, .toggle-switch, .chat-send-btn, .scroll-to-bottom {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Activities content bottom padding to clear nav */
+#activities-content {
+  padding-bottom: calc(100px + var(--safe-bottom)) !important;
+}
+
+/* Chat content bottom padding */
+#chat-content {
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+/* Ensure yearbook forms don't overflow */
+.yearbook-form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Smaller screens: yearbook */
+@media (max-width: 360px) {
+  .yb-hero { padding: 16px 14px; border-radius: 18px; }
+  .yb-hero-title { font-size: 15px; }
+  .yb-hero-sub { font-size: 11px; }
+  .yb-card { padding: 14px; border-radius: 16px; }
+  .yb-card-title { font-size: 12px; }
+  .yb-qr-frame { width: min(160px, 45vw); height: min(160px, 45vw); padding: 8px; }
+  .option-icon { width: 40px; height: 40px; border-radius: 12px; }
+  .option-title { font-size: 14px; }
+  .option-desc { font-size: 11px; }
+  .yearbook-option-btn { padding: 14px 12px; }
+  .yb-photo-box { min-height: 160px; }
+  .yb-camera-focus-frame { width: 70vw; }
+  .yb-capture-btn { width: 60px; height: 60px; }
+  .activities-tabs { padding: 6px 8px; }
+  .tab-item { padding: 6px 10px; font-size: 11px; }
+  .act-summary { gap: 8px; }
+  .act-summary-card { padding: 12px 4px; border-radius: 14px; }
+  .act-sum-val { font-size: 18px; }
+  .act-sum-lbl { font-size: 9px; }
+  .act-section-title { font-size: 14px; }
+  .act-item { padding: 12px; border-radius: 16px; }
+  .act-title { font-size: 13px; }
+  .act-desc { font-size: 11px; }
+  .act-meta { font-size: 10px; }
+  .act-cat-tag { font-size: 9px; padding: 2px 8px; }
+  .clock-btn { width: min(100%, 200px); border-radius: 24px; }
+  .btn-text { font-size: 16px; }
+  .qr-status-card { min-height: 110px; padding: 14px 16px; border-radius: 24px; }
+  .qr-status-info h3 { font-size: 16px; }
+  .qr-status-info p { font-size: 11px; }
+  .stats-grid { gap: 8px; }
+  .stat-item { padding: 10px 6px; border-radius: 16px; }
+  .stat-icon { width: 38px; height: 38px; }
+  .stat-icon svg { width: 20px; height: 20px; }
+  .stat-time { font-size: 13px; }
+  .stat-label { font-size: 10px; }
+  .time-display h1 { font-size: clamp(28px, 8vw, 40px); }
+  .profile-avatar { width: 80px; height: 80px; }
+  .profile-name { font-size: 18px; }
+  .profile-role { font-size: 12px; }
+  .profile-stat-value { font-size: 20px; }
+  .profile-stat-label { font-size: 10px; }
+  .menu-item { padding: 12px; border-radius: 16px; margin-bottom: 8px; }
+  .menu-icon { width: 38px; height: 38px; border-radius: 10px; }
+  .menu-icon svg { width: 18px; height: 18px; }
+  .menu-item span { font-size: 13px; }
+  .sub-header h2 { font-size: 15px; }
+  .back-btn { width: 34px; height: 34px; }
+  .chat-user-avatar { width: 48px; height: 48px; }
+  .chat-user-name { font-size: 10px; max-width: 56px; }
+  .chat-item { padding: 12px; gap: 12px; }
+  .chat-avatar { width: 44px; height: 44px; }
+  .chat-info h4 { font-size: 13px; }
+  .chat-info p { font-size: 12px; }
+  .chat-unread-badge { min-width: 18px; height: 18px; font-size: 10px; }
+  .msg-bubble { font-size: 13px; padding: 8px 12px; }
+  .chat-input-area { padding: 10px 12px; }
+  .chat-input-area input { padding: 10px 14px; min-height: 40px; }
+  .chat-send-btn { width: 40px; height: 40px; }
+  .attendance-summary { gap: 8px; padding: 12px; }
+  .summary-pill { padding: 6px 10px; font-size: 11px; }
+  .calendar-nav { padding: 8px 12px; }
+  .cal-nav-btn { padding: 6px 10px; font-size: 11px; }
+  .cal-nav-text { font-size: 13px; }
+  .day-cell { border-radius: 12px; font-size: 12px; }
+  .list-row { padding: 10px 0; font-size: 10px; }
+  .list-header { padding: 8px 0; font-size: 8px; }
+  .yb-clients-toolbar { margin-bottom: 10px; }
+  .yb-clients-search { height: 40px; font-size: 14px; }
+  .yb-filter-chip { padding: 6px 10px; font-size: 11px; }
+  .yb-client-thumb { width: 44px; height: 44px; border-radius: 12px; }
+  .yb-client-name { font-size: 13px; }
+  .yb-client-meta { font-size: 10px; }
+  .yb-tag { font-size: 9px; padding: 2px 6px; }
+  .yb-detail-sheet { padding: 16px 16px calc(18px + var(--safe-bottom)); }
+  .yb-detail-row { padding: 8px 0; font-size: 12px; }
+  .yb-detail-photo { border-radius: 12px; }
+  .success-card { padding: 28px 20px 20px; width: min(100%, 280px); }
+  .success-icon { width: 56px; height: 56px; }
+  .success-card h3 { font-size: 16px; }
+  .success-card p { font-size: 12px; }
+  .act-modal-card { padding: 20px 16px calc(20px + var(--safe-bottom)); }
+  .act-modal-title { font-size: 16px; }
+  .location-check-card { padding: 24px 20px; width: min(100%, 320px); }
+  .location-check-icon { width: 56px; height: 56px; }
+  .location-check-title { font-size: 16px; }
+  .location-check-desc { font-size: 12px; }
+  .location-check-btn { padding: 12px; font-size: 13px; }
+}
+
+/* Very small height (landscape phones) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .yb-camera-focus-frame { width: 50vh; max-width: 280px; }
+  .yb-capture-btn { width: 50px; height: 50px; }
+  .yb-camera-guide { font-size: 11px; }
+  .clock-btn { width: 120px; border-radius: 20px; }
+  .btn-icon { width: 40px; height: 40px; margin-bottom: 6px; }
+  .btn-text { font-size: 14px; }
+  .home-content { padding-bottom: calc(80px + var(--safe-bottom)); gap: 10px; }
+  .stats-grid { margin-top: 2px; }
+  .qr-status-card { min-height: 50px; padding: 12px 5px; }
+  .profile-header { padding: 20px 16px 16px; }
+  .profile-avatar { width: 72px; height: 72px; }
+  .profile-stats { gap: 20px; margin-top: 14px; }
+}
+
+/* Ensure app doesn't overflow on short landscape */
+@media (max-height: 400px) {
+  #app { max-height: 100dvh; border-radius: 0; height: 100dvh; }
+  body { display: block; background: var(--bg); }
+}
+
+/* Smooth scrolling for all scrollable areas */
+.sub-content, .home-content, #chat-messages, .profile-menu, .attendance-list, .yb-detail-sheet {
+  scroll-behavior: smooth;
+}
+
+/* Fix for Android Chrome bottom nav bar */
+@supports (height: 100dvh) {
+  #app { height: 100dvh; }
+  .screen { min-height: 100dvh; }
+  .sub-screen { min-height: 100dvh; }
+}
+
+/* Ensure text doesn't get too small on iOS */
+@media (max-width: 360px) {
+  html { -webkit-text-size-adjust: 100%; }
+}
+
+
+
+/* ===== ADDITIONAL RESPONSIVE POLISH ===== */
+
+/* Ensure all screens handle safe areas properly */
+.screen, .sub-screen {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* Activities screen: ensure content clears bottom nav */
+#activities-screen .sub-content {
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+#tab-office-task {
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+
+/* Date filter row: allow wrapping on very small screens */
+#tab-office-task > div:nth-child(2) {
+  flex-wrap: wrap;
+}
+#tab-office-task > div:nth-child(2) > input {
+  min-width: 120px;
+}
+
+/* Chat screen: ensure messages clear input area */
+#chat-messages {
+  padding-bottom: 10px;
+}
+
+/* Yearbook screens: prevent horizontal overflow */
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content,
+#yearbook-clients-screen .sub-content {
+  overflow-x: hidden;
+}
+
+/* QR display: prevent overflow */
+.yb-qr-display {
+  max-width: 100%;
+}
+.yb-qr-frame {
+  max-width: 100%;
+}
+
+/* Calendar: ensure it doesn't overflow */
+.calendar-days {
+  width: 100%;
+}
+
+/* Attendance list: horizontal scroll with snap */
+.attendance-list {
+  scroll-snap-type: x mandatory;
+}
+.list-row, .list-header {
+  scroll-snap-align: start;
+}
+
+/* Profile menu: ensure last item clears bottom nav */
+.profile-menu {
+  padding-bottom: calc(100px + var(--safe-bottom));
+}
+
+/* Team list: ensure last item clears bottom nav */
+#team-list {
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+/* Sub-screen content bottom padding for all */
+.sub-content {
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+/* Ensure modals and overlays are above everything */
+#activity-modal, .success-modal, .yb-detail-overlay, .yb-camera-overlay, #qr-modal {
+  z-index: 1000;
+}
+
+/* Loading overlay above modals */
+.loading-overlay {
+  z-index: 2000;
+}
+
+/* Error toast above everything */
+.error-toast {
+  z-index: 3000;
+}
+
+/* Better focus states for accessibility */
+button:focus-visible, .form-input:focus-visible, .chat-input-area input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Prevent horizontal scroll on the entire app */
+#app {
+  overflow-x: hidden;
+}
+
+/* Smooth transitions for tab switching */
+.activity-tab-content {
+  transition: opacity 0.2s ease;
+}
+
+/* Ensure yearbook hero doesn't overflow */
+.yb-hero {
+  max-width: 100%;
+}
+
+/* Better handling of long text in activity items */
+.act-title {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Ensure chat messages don't overflow */
+.msg-group {
+  max-width: 85%;
+}
+
+/* Better scroll-to-bottom button positioning */
+.scroll-to-bottom {
+  bottom: calc(70px + var(--safe-bottom));
+}
+
+/* Fix for iOS status bar */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .home-header {
+    padding-top: calc(16px + env(safe-area-inset-top));
+  }
+  .sub-header {
+    padding-top: calc(14px + env(safe-area-inset-top));
+  }
+  .attendance-header {
+    padding-top: calc(14px + env(safe-area-inset-top));
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode support (basic) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --white: #1e293b;
+    --text-dark: #f1f5f9;
+    --text-medium: #94a3b8;
+    --text-light: #64748b;
+    --border: #334155;
+  }
+  #home-screen {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  }
+  .chat-item, .act-item, .yb-client-card, .team-member, .menu-item, .setting-item, .act-summary-card, .stat-item, .chat-skeleton-avatar, .chat-skeleton-line, .yb-clients-search, .yb-filter-chip {
+    background: #1e293b;
+  }
+  .act-section-title, .chat-conversations-title, .chat-users-title, .yb-card-title, .act-day-label span:last-child {
+    color: var(--text-dark);
+  }
+  .form-input, .form-select, .chat-input-area input, .yb-clients-search {
+    background: #1e293b;
+    color: var(--text-dark);
+    border-color: var(--border);
+  }
+  #chat-messages {
+    background: #0f172a;
+  }
+  .msg-group.received .msg-bubble {
+    background: #1e293b;
+    color: var(--text-dark);
+  }
+  .typing-indicator {
+    background: #1e293b;
+  }
+  .chat-input-area {
+    background: #1e293b;
+    border-color: var(--border);
+  }
+  .yb-hero.authorize, .yb-hero.owner {
+    color: #fff;
+  }
+}
+
+
+
+
+
+/* ===== YEARBOOK RESPONSIVE FIXES ===== */
+
+/* Ensure yearbook screens don't overflow */
+#yearbook-authorize-screen,
+#yearbook-owner-screen {
+  overflow: hidden;
+}
+
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content {
+  display: block;
+  padding: 12px 16px calc(100px + var(--safe-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.yearbook-form {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Hero card responsive */
+.yb-hero {
+  border-radius: 18px;
+  padding: 18px 16px;
+  margin-bottom: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.yb-hero-row {
+  gap: 12px;
+}
+.yb-hero-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+.yb-hero-badge svg {
+  width: 22px;
+  height: 22px;
+}
+.yb-hero-title {
+  font-size: 16px;
+}
+.yb-hero-sub {
+  font-size: 11px;
+}
+.yb-hero-chip {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 10px;
+}
+
+/* Cards responsive */
+.yb-card {
+  border-radius: 16px;
+  padding: 16px;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.yb-card-title {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+/* Form inputs in yearbook */
+#yearbook-authorize-screen .input-group,
+#yearbook-owner-screen .input-group {
+  width: 100%;
+}
+#yearbook-authorize-screen .form-input,
+#yearbook-owner-screen .form-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 16px;
+}
+
+/* Labels in yearbook */
+#yearbook-authorize-screen .input-group label,
+#yearbook-owner-screen .input-group label {
+  font-size: 12px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Iframe wrapper responsive */
+#yb-auth-iframe-wrap,
+#yb-owner-iframe-wrap {
+  border-radius: 14px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+#yb-auth-iframe-wrap > div:first-child,
+#yb-owner-iframe-wrap > div:first-child {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#yb-auth-iframe-wrap button,
+#yb-owner-iframe-wrap button {
+  margin-left: auto;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+#yb-auth-iframe-container,
+#yb-owner-iframe-container {
+  height: 280px;
+  width: 100%;
+}
+#yb-auth-iframe-container iframe,
+#yb-owner-iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+#yb-auth-iframe-placeholder,
+#yb-owner-iframe-placeholder {
+  padding: 30px 16px;
+  text-align: center;
+}
+
+/* Photo box responsive */
+.yb-photo-box {
+  min-height: 160px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* QR display responsive */
+.yb-qr-display {
+  padding: 14px;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.yb-qr-frame {
+  width: 160px;
+  height: 160px;
+  padding: 8px;
+}
+.yb-qr-caption {
+  font-size: 11px;
+  max-width: 100%;
+}
+
+/* Submit button */
+#yearbook-authorize-screen .btn,
+#yearbook-owner-screen .btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* ===== SMALL SCREEN YEARBOOK FIXES (< 360px) ===== */
+@media (max-width: 360px) {
+  #yearbook-authorize-screen .sub-content,
+  #yearbook-owner-screen .sub-content {
+    padding: 10px 12px calc(90px + var(--safe-bottom));
+  }
+  .yearbook-form {
+    gap: 12px;
+  }
+  .yb-hero {
+    padding: 14px 12px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+  .yb-hero-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  .yb-hero-badge svg {
+    width: 20px;
+    height: 20px;
+  }
+  .yb-hero-title {
+    font-size: 14px;
+  }
+  .yb-hero-sub {
+    font-size: 10px;
+  }
+  .yb-hero-chip {
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 9px;
+  }
+  .yb-card {
+    padding: 14px;
+    border-radius: 14px;
+    gap: 10px;
+  }
+  .yb-card-title {
+    font-size: 12px;
+  }
+  #yearbook-authorize-screen .form-input,
+  #yearbook-owner-screen .form-input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+  #yb-auth-iframe-container,
+  #yb-owner-iframe-container {
+    height: 220px;
+  }
+  #yb-auth-iframe-wrap > div:first-child,
+  #yb-owner-iframe-wrap > div:first-child {
+    padding: 8px 10px;
+  }
+  #yb-auth-iframe-wrap button,
+  #yb-owner-iframe-wrap button {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  .yb-photo-box {
+    min-height: 140px;
+  }
+  .yb-qr-frame {
+    width: 140px;
+    height: 140px;
+  }
+  #yearbook-authorize-screen .btn,
+  #yearbook-owner-screen .btn {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+/* ===== MEDIUM SCREENS (361px - 430px) ===== */
+@media (min-width: 361px) and (max-width: 430px) {
+  .yb-hero {
+    padding: 18px 16px;
+  }
+  .yb-card {
+    padding: 18px;
+  }
+  #yb-auth-iframe-container,
+  #yb-owner-iframe-container {
+    height: 300px;
+  }
+}
+
+/* ===== LANDSCAPE / SHORT HEIGHT ===== */
+@media (max-height: 600px) {
+  #yearbook-authorize-screen .sub-content,
+  #yearbook-owner-screen .sub-content {
+    padding-bottom: calc(80px + var(--safe-bottom));
+  }
+  .yb-hero {
+    padding: 14px 14px;
+    margin-bottom: 10px;
+  }
+  .yb-card {
+    padding: 14px;
+    gap: 10px;
+  }
+  #yb-auth-iframe-container,
+  #yb-owner-iframe-container {
+    height: 200px;
+  }
+  .yb-photo-box {
+    min-height: 120px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE OVERRIDES — APPEND THIS AT THE END OF YOUR CSS
+   ========================================================= */
+
+/* Base fluid sizing */
+:root{
+  --app-max: 430px;
+  --content-max: 720px;
+  --pad-x: clamp(12px, 3vw, 18px);
+  --pad-y: clamp(10px, 2.5vw, 16px);
+  --gap: clamp(8px, 2vw, 14px);
+}
+
+html, body{
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after{
+  box-sizing: border-box;
+}
+
+#app{
+  width: 100%;
+  max-width: var(--app-max);
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.screen,
+.sub-screen{
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.home-header,
+.attendance-header,
+.sub-header,
+.profile-header{
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.home-content,
+.login-content,
+.signup-content,
+.profile-menu,
+.sub-content,
+.attendance-list,
+#chat-messages{
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.home-content{
+  gap: var(--gap);
+  padding-top: 10px;
+  padding-bottom: calc(92px + var(--safe-bottom));
+}
+
+.time-display h1{
+  font-size: clamp(28px, 9vw, 46px);
+  line-height: 1;
+}
+
+.time-display p{
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Cards and grids */
+.qr-status-card,
+.clock-btn,
+.stats-grid,
+.stat-item,
+.menu-item,
+.setting-item,
+.chat-item,
+.team-member,
+.act-item,
+.act-summary-card,
+.summary-pill,
+.yearbook-option-btn,
+.yb-card,
+.yb-hero,
+.yb-client-card{
+  width: 100%;
+  min-width: 0;
+}
+
+.stats-grid{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+  max-width: 100%;
+}
+
+.clock-btn{
+  width: min(100%, 235px);
+  aspect-ratio: 1 / 1;
+}
+
+.bottom-nav{
+  width: 100%;
+  max-width: var(--app-max);
+  height: calc(72px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+}
+
+.nav-item{
+  min-width: 0;
+  padding: 6px 4px;
+}
+
+.nav-item span{
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Sub-screen content */
+.sub-content{
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 14px;
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+.sub-header h2{
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chat */
+.chat-users-scroll{
+  gap: 12px;
+}
+
+.chat-user-avatar-wrap{
+  min-width: 64px;
+}
+
+.chat-conversations-section{
+  padding-bottom: calc(96px + var(--safe-bottom));
+}
+
+.chat-item{
+  gap: 12px;
+}
+
+.chat-info h4,
+.chat-info p{
+  min-width: 0;
+}
+
+.msg-group{
+  max-width: 86%;
+}
+
+.chat-input-area{
+  padding: 10px var(--pad-x);
+  gap: 8px;
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+}
+
+.chat-input-area input{
+  min-width: 0;
+}
+
+/* Attendance */
+.attendance-summary{
+  gap: 8px;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.calendar-section{
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.calendar-days{
+  gap: 5px;
+}
+
+.list-header,
+.list-row{
+  min-width: 520px;
+}
+
+.attendance-list{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.day-detail-card,
+#day-detail-card{
+  width: min(100%, 430px);
+  left: 50%;
+  transform: translateX(-50%) translateY(110%);
+}
+
+/* Profile */
+.profile-stats{
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.profile-menu{
+  padding-bottom: calc(110px + var(--safe-bottom));
+}
+
+.menu-item{
+  gap: 12px;
+}
+
+/* Activities */
+.activities-tabs{
+  gap: 6px;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.tab-item{
+  padding: 8px 12px;
+}
+
+.act-summary{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#act-cat-pick{
+  gap: 8px;
+}
+
+.act-modal-card{
+  width: 100%;
+  max-width: 430px;
+}
+
+/* Yearbook */
+.yearbook-form{
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content,
+#yearbook-clients-screen .sub-content{
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.yb-hero,
+.yb-card,
+.yb-qr-display,
+.yb-client-card,
+.yb-detail-sheet{
+  width: 100%;
+  max-width: 100%;
+}
+
+.yb-qr-frame{
+  width: min(46vw, 180px);
+  height: min(46vw, 180px);
+}
+
+#yb-auth-iframe-container,
+#yb-owner-iframe-container{
+  width: 100%;
+  height: clamp(200px, 34vh, 300px);
+}
+
+.yb-photo-box{
+  min-height: clamp(120px, 24vh, 160px);
+}
+
+#yearbook-authorize-screen .btn,
+#yearbook-owner-screen .btn{
+  width: 100%;
+}
+
+/* Prevent any horizontal bleed */
+#app,
+.screen,
+.sub-screen,
+.home-content,
+.sub-content,
+.profile-menu,
+.attendance-list,
+#chat-messages{
+  overflow-x: hidden;
+}
+
+/* Mobile portrait tweaks */
+@media (max-width: 430px){
+  #app{
+    max-width: 100vw;
+    border-radius: 0;
+  }
+
+  .clock-btn{
+    width: min(100%, 220px);
+  }
+
+  .qr-status-card{
+    min-height: 120px;
+    padding: 14px;
+  }
+
+  .btn-text{
+    font-size: 15px;
+  }
+
+  .stat-label{
+    font-size: 10px;
+  }
+
+  .chat-user-name{
+    max-width: 60px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px){
+  :root{
+    --pad-x: 12px;
+    --gap: 8px;
+  }
+
+  .home-content{
+    padding-bottom: calc(84px + var(--safe-bottom));
+  }
+
+  .stats-grid{
+    gap: 8px;
+  }
+
+  .stat-item{
+    padding: 10px 6px;
+  }
+
+  .stat-icon{
+    width: 38px;
+    height: 38px;
+  }
+
+  .nav-item svg{
+    width: 20px;
+    height: 20px;
+  }
+
+  .bottom-nav{
+    height: calc(68px + var(--safe-bottom));
+  }
+}
+
+/* Landscape phones: keep everything usable, tighter vertical rhythm */
+@media (orientation: landscape) and (max-height: 600px){
+  #app{
+    max-width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  body{
+    display: block;
+  }
+
+  .home-header,
+  .attendance-header,
+  .sub-header,
+  .profile-header{
+    padding-top: calc(8px + var(--safe-top));
+    padding-bottom: 8px;
+  }
+
+  .home-content{
+    padding-top: 8px;
+    padding-bottom: calc(72px + var(--safe-bottom));
+    gap: 10px;
+  }
+
+  .time-display h1{
+    font-size: clamp(24px, 6vh, 38px);
+  }
+
+  .qr-status-card{
+    min-height: 96px;
+    padding: 12px 14px;
+  }
+
+  .clock-btn{
+    width: min(42vh, 180px);
+    border-radius: 22px;
+  }
+
+  .btn-icon{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+  }
+
+  .btn-text{
+    font-size: 14px;
+  }
+
+  .stats-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stat-item{
+    padding: 10px 6px;
+  }
+
+  .bottom-nav{
+    height: calc(60px + var(--safe-bottom));
+  }
+
+  .nav-item{
+    min-height: 40px;
+    padding: 4px 2px;
+  }
+
+  .nav-item span{
+    font-size: 9px;
+  }
+
+  .chat-conversations-section{
+    padding-bottom: calc(76px + var(--safe-bottom));
+  }
+
+  .chat-users-section{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .chat-item,
+  .team-member,
+  .menu-item,
+  .setting-item,
+  .act-item{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .list-header,
+  .list-row{
+    min-width: 560px;
+  }
+
+  #yearbook-authorize-screen .sub-content,
+  #yearbook-owner-screen .sub-content{
+    padding-top: 10px;
+    padding-bottom: calc(72px + var(--safe-bottom));
+  }
+
+  .yb-hero{
+    padding: 14px 14px;
+    margin-bottom: 10px;
+  }
+
+  .yb-card{
+    padding: 14px;
+    gap: 10px;
+  }
+
+  #yb-auth-iframe-container,
+  #yb-owner-iframe-container{
+    height: 180px;
+  }
+
+  .yb-photo-box{
+    min-height: 110px;
+  }
+
+  .yb-qr-frame{
+    width: min(34vh, 150px);
+    height: min(34vh, 150px);
+  }
+
+  .yb-client-card{
+    padding: 12px;
+  }
+}
+
+/* Short height safety net */
+@media (max-height: 420px){
+  .time-display{
+    margin-top: 0;
+  }
+
+  .scan-hint,
+  .terms-text,
+  .empty-state p,
+  .coming-soon-container p{
+    font-size: 12px;
+  }
+
+  .home-content{
+    padding-bottom: calc(64px + var(--safe-bottom));
+  }
+}
+
+/* Better text wrapping everywhere */
+.time-small,
+.attendance-small,
+.chat-info p,
+.menu-item span,
+.setting-info p,
+.act-title,
+.act-desc,
+.yb-card-title,
+.yb-client-name,
+.yb-client-meta,
+.option-title,
+.option-desc{
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Make iframes and images always scale down */
+img,
+video,
+iframe{
+  max-width: 100%;
+}
+
+iframe{
+  display: block;
+}
+
+/* Keep modals full width on narrow screens */
+.success-card,
+.location-check-card,
+.act-modal-card,
+.yb-detail-sheet,
+#qr-modal .yb-detail-sheet{
+  width: min(100%, 430px);
+  max-width: 100%;
+}
+
+/* =========================
+   GLOBAL RESPONSIVE SETUP
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Page container */
+.page-container {
+  max-width: 100%;
+  padding: 16px;
+}
+
+/* =========================
+   HEADER (Yearbook - Authorize)
+========================= */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.header h1 {
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 600;
+}
+
+/* =========================
+   HERO CARD (Authorize Yearbook)
+========================= */
+.hero-card {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-card h2 {
+  font-size: clamp(16px, 4vw, 18px);
+}
+
+.hero-card p {
+  font-size: clamp(12px, 3vw, 14px);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+.card {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+/* Section title */
+.card h3 {
+  font-size: clamp(14px, 3.5vw, 16px);
+  margin-bottom: 12px;
+}
+
+/* =========================
+   INPUT FIELDS
+========================= */
+.input-group {
+  margin-bottom: 14px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+/* INPUT FIX */
+.input-group input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+}
+
+/* Prevent overflow on small screens */
+.input-group input::placeholder {
+  font-size: 13px;
+}
+
+/* =========================
+   EMPLOYABILITY CHECKER ROW
+========================= */
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap; /* KEY FIX */
+}
+
+.action-row .left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-row button {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+/* =========================
+   SMALL SCREENS (PHONES)
+========================= */
+@media (max-width: 480px) {
+  .page-container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .hero-card {
+    padding: 14px;
+  }
+
+  .input-group input {
+    height: 42px;
+  }
+}
+
+/* =========================
+   LANDSCAPE MODE FIX (IMPORTANT)
+========================= */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .page-container {
+    padding: 10px;
+  }
+
+  .hero-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hero-card h2 {
+    font-size: 14px;
+  }
+
+  .hero-card p {
+    display: none; /* prevent vertical overflow */
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .input-group input {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .action-row {
+    flex-direction: row;
+  }
+}
+
+/* =========================
+   TABLET / LARGE SCREENS
+========================= */
+@media (min-width: 768px) {
+  .page-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* ===== YEARBOOK INLINE FORMS (inside tab) ===== */
+#yearbook-authorize-screen,
+#yearbook-owner-screen {
+  display: none;
+}
+#yearbook-authorize-screen .sub-header,
+#yearbook-owner-screen .sub-header {
+  padding-top: 14px;
+  background: rgba(255,255,255,0.92);
+  border-bottom: 1px solid var(--border);
+}
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content {
+  padding: 16px 0;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: auto;
+}
+
+/* Make "Ready for Morning" card same size as "Running Late" banner */
+.qr-status-card {
+  width: auto;
+  min-height: auto;
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin: 0 16px 12px;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(26,155,138,.2);
+  align-self: stretch;
+}
+
+.qr-status-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  background: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.qr-status-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.qr-status-info h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.qr-status-info p {
+  font-size: 11px;
+  line-height: 1.3;
+  opacity: 0.9;
+}
+</style><script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
@@ -1741,8 +3369,7 @@ html,body{
 <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div><p style="font-size:13px;color:var(--text-medium)">Processing...</p></div>
 <div id="error-toast" class="error-toast"></div>
 <div id="sync-badge">Syncing...</div>
-
-<div id="qr-overlay" class="qr-overlay">
+<div id="qr-overlay" class="qr-overlay" style="display:none;">
   <button class="scanner-close" onclick="closeScanner()" aria-label="Close scanner">&times;</button>
   <div class="scanner-container">
     <div class="scanner-corner tl"></div><div class="scanner-corner tr"></div>
@@ -1753,39 +3380,30 @@ html,body{
   <p class="scanner-error" id="scanner-error"></p>
 </div>
 
-<div id="success-modal" class="success-modal">
-  <div class="success-card">
-    <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div>
-    <h3 id="success-title">Success!</h3>
-    <p id="success-message">Action completed successfully.</p>
-    <button class="success-btn" onclick="closeSuccessModal()">OK</button>
-  </div>
-</div>
-
-<div id="activity-modal">
-  <div class="act-modal-card">
-    <div class="act-modal-title">Log Activity</div>
-    <div id="act-cat-pick">
-      <div class="act-cat-opt active" data-cat="work" onclick="selectActCat(this)">Work</div>
-      <div class="act-cat-opt" data-cat="meeting" onclick="selectActCat(this)">Meeting</div>
-      <div class="act-cat-opt" data-cat="personal" onclick="selectActCat(this)">Personal</div>
-      <div class="act-cat-opt" data-cat="other" onclick="selectActCat(this)">Other</div>
+<div id="location-check-overlay" class="location-check-overlay">
+  <button class="location-check-close" onclick="closeLocationCheck()" aria-label="Close location check">&times;</button>
+  <div class="location-check-card" id="location-check-card">
+    <div class="location-check-icon" id="location-check-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
     </div>
-    <div class="input-group"><input type="text" id="act-input-title" class="form-input" placeholder="What did you accomplish? *"></div>
-    <div class="input-group"><textarea id="act-input-desc" class="form-input" placeholder="Add details (optional)..."></textarea></div>
-    <div class="input-group"><input type="date" id="act-input-date" class="form-input"></div>
-    <button class="btn btn-primary" onclick="saveActivity()">Save Activity</button>
-    <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeActivityModal()">Cancel</button>
+    <div class="location-check-title" id="location-check-title">Checking Location...</div>
+    <div class="location-check-desc" id="location-check-desc">Please wait while we verify your office location.</div>
+    <div class="location-check-status verifying" id="location-check-status">
+      <span class="location-check-spinner"></span>
+      <span>Verifying GPS location...</span>
+    </div>
+    <div class="location-check-details" id="location-check-details" style="display:none;"></div>
+    <button class="location-check-btn secondary" id="location-check-cancel-btn" onclick="closeLocationCheck()" style="margin-top:12px;">Cancel</button>
+    <button class="location-check-btn" id="location-check-retry-btn" onclick="retryLocationCheck()" style="display:none;margin-top:12px;">Try Again</button>
   </div>
 </div>
 
-<div id="splash-screen" class="screen active">
-  <div class="splash-content">
-    <div class="logo-large"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" stroke="white" stroke-width="3"/><path d="M40 18 L40 40 L52 48" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="40" r="5" fill="white"/></svg></div>
-    <div class="logo-text"><span class="time-text">TIME</span><span class="attendance-text">Attendance</span></div>
-    <div class="splash-loader"></div>
-  </div>
-</div>
+
+
+
 
 <div id="login-screen" class="screen">
   <div class="login-content">
@@ -1907,7 +3525,7 @@ html,body{
     </div>
 
     <div class="action-button-container">
-      <button id="clock-btn" class="clock-btn clock-in" onclick="openScanner()">
+      <button id="clock-btn" class="clock-btn clock-in" onclick="openLocationCheck()">
         <div class="btn-icon">
           <svg viewBox="0 0 40 40" fill="none">
             <rect x="8" y="8" width="24" height="24" rx="4" stroke="white" stroke-width="2"/>
@@ -1920,7 +3538,7 @@ html,body{
       </button>
     </div>
 
-    <p class="scan-hint" id="scan-hint">Morning shift: 7:00 AM - 12:00 PM (Late after 7:05 AM)</p>
+    <p class="scan-hint" id="scan-hint">Tap button to record attendance. Must be within office premises.</p>
 
     <div class="stats-grid">
       <div class="stat-item">
@@ -2170,9 +3788,9 @@ html,body{
       <div class="day-detail-item"><label>Afternoon Out</label><span id="day-detail-afternoon-out">-</span></div>
     </div>
   </div>
-  <div class="attendance-list">
-    <div class="list-header"><span>Date</span><span>Status</span><span>Morn In</span><span>Morn Out</span><span>Aft In</span><span>Aft Out</span><span>Edit</span></div>
-    <div class="list-body" id="attendance-list-body"></div>
+  <div class="attendance-list" style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+    <div class="list-header" style="min-width:480px;"><span>Date</span><span>Status</span><span>Morn In</span><span>Morn Out</span><span>Aft In</span><span>Aft Out</span><span>Hours</span><span>Edit</span></div>
+    <div class="list-body" id="attendance-list-body" style="min-width:480px;"></div>
   </div>
   <div class="bottom-nav">
     <div class="nav-item" onclick="navigateTo('home-screen')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Home</span></div>
@@ -2222,65 +3840,462 @@ html,body{
 
     <!-- YEARBOOK TAB -->
     <div id="tab-yearbook" class="activity-tab-content">
-      <div class="yearbook-intro">
-        <div class="yearbook-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" width="48" height="48">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          </svg>
+      <div id="yb-menu">
+        <div class="yearbook-intro">
+          <div class="yearbook-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" width="48" height="48">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <h3>Yearbook Services</h3>
+          <p>Select an option to proceed with yearbook-related tasks.</p>
         </div>
-        <h3>Yearbook Services</h3>
-        <p>Select an option to proceed with yearbook-related tasks.</p>
+        <div class="yearbook-options">
+          <button class="yearbook-option-btn" onclick="showYearbookAuthorize()">
+            <div class="option-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+              </svg>
+            </div>
+            <div class="option-text">
+              <span class="option-title">Authorize</span>
+              <span class="option-desc">Process authorization for yearbook claims</span>
+            </div>
+            <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+          <button class="yearbook-option-btn" onclick="showYearbookOwner()">
+            <div class="option-icon" style="background:rgba(123,140,222,0.12);color:var(--secondary);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="option-text">
+              <span class="option-title">Owner</span>
+              <span class="option-desc">Yearbook owner claim and verification</span>
+            </div>
+            <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+          <button class="yearbook-option-btn" onclick="openYearbookClients()">
+            <div class="option-icon" style="background:rgba(243,156,18,0.12);color:var(--warning);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="option-text">
+              <span class="option-title">View Clients</span>
+              <span class="option-desc">Browse all yearbook clients you've assisted</span>
+            </div>
+            <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="yearbook-options">
-        <button class="yearbook-option-btn" onclick="openSubScreen('yearbook-authorize-screen')">
-          <div class="option-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14,2 14,8 20,8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10,9 9,9 8,9"/>
-            </svg>
+
+      <!-- Authorize Form (inline) -->
+      <div id="yearbook-authorize-screen">
+        <div class="sub-header">
+          <button class="back-btn" onclick="showYearbookMenu()" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>
+          <h2>Yearbook - Authorize</h2>
+        </div>
+        <div class="sub-content">
+          <div class="yearbook-form">
+
+            <div class="yb-hero authorize">
+              <div class="yb-hero-row">
+                <div class="yb-hero-badge">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.485 0 4.735 1.007 6.364 2.636"/></svg>
+                </div>
+                <div>
+                  <div class="yb-hero-title">Authorize Yearbook</div>
+                  <div class="yb-hero-sub">Verify and approve a yearbook claim</div>
+                </div>
+              </div>
+              <span class="yb-hero-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                <span id="yb-auth-time">Live session</span>
+              </span>
+            </div>
+
+            <div class="form-section" style="gap:14px;">
+
+              <div class="yb-card">
+                <div class="yb-card-title"><span class="dot"></span>Client Details</div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Authorize Person Name *</label>
+                  <input type="text" id="yb-auth-person" class="form-input" placeholder="Enter authorize person name">
+                </div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Yearbook Owner Name *</label>
+                  <input type="text" id="yb-auth-owner" class="form-input" placeholder="Enter yearbook owner name">
+                </div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Batch *</label>
+                  <input type="text" id="yb-auth-batch" class="form-input" placeholder="e.g. 2024, 2023, 2025">
+                </div>
+              </div>
+
+              <div class="yb-card">
+                <div class="yb-card-title"><span class="dot"></span>Graduate Employability Checker</div>
+                <div class="input-group" style="margin-top:8px;">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Open Checker In-App</label>
+                  <div id="yb-auth-iframe-wrap" style="border-radius:16px;overflow:hidden;border:1.5px solid var(--border);background:var(--white);">
+                    <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      <span style="font-size:12px;font-weight:600;color:var(--text-dark);">Employability Checker</span>
+                      <button onclick="toggleAuthIframe()" style="margin-left:auto;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Open</button>
+                    </div>
+                    <div id="yb-auth-iframe-container" style="display:none;height:300px;">
+                      <iframe src="https://nton4976-wq.github.io/ubiquitous-couscous/" style="width:100%;height:100%;border:none;" title="Graduate Employability Checker"></iframe>
+                    </div>
+                    <div id="yb-auth-iframe-placeholder" style="padding:40px 20px;text-align:center;color:var(--text-light);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.4;margin-bottom:8px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                      <div style="font-size:12px;">Tap "Open" to load the checker</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="yb-card">
+                <div class="yb-card-title"><span class="dot"></span>Documentation</div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
+                  <div id="yb-auth-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('auth')">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span>Tap to open camera</span>
+                  </div>
+                  <input type="hidden" id="yb-auth-photo-data" value="">
+                </div>
+              </div>
+
+              <div class="yb-card">
+                <div class="yb-card-title"><span class="dot"></span>Office Survey QR Code</div>
+                <div class="yb-qr-display" onclick="openQRModal()" style="cursor:pointer;">
+                  <div class="yb-qr-frame">
+                    <span class="yb-qr-corner tl"></span><span class="yb-qr-corner tr"></span>
+                    <span class="yb-qr-corner bl"></span><span class="yb-qr-corner br"></span>
+                    <img id="yb-auth-qr-img" alt="Office Survey QR" src="">
+                  </div>
+                  <div class="yb-qr-caption">Tap to enlarge QR code. Ask the client to scan with their phone.</div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" onclick="submitYearbookAuthorize()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                Submit Authorization
+              </button>
+
+            </div>
           </div>
-          <div class="option-text">
-            <span class="option-title">Authorize</span>
-            <span class="option-desc">Process authorization for yearbook claims</span>
+        </div>
+      </div>
+
+      <!-- Owner Form (inline) -->
+      <div id="yearbook-owner-screen">
+        <div class="sub-header">
+          <button class="back-btn" onclick="showYearbookMenu()" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>
+          <h2>Yearbook - Owner</h2>
+        </div>
+        <div class="sub-content">
+          <div class="yearbook-form">
+
+            <div class="yb-hero owner">
+              <div class="yb-hero-row">
+                <div class="yb-hero-badge">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div class="yb-hero-title">Owner Claim</div>
+                  <div class="yb-hero-sub">Register the yearbook owner verification</div>
+                </div>
+              </div>
+              <span class="yb-hero-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                Verified workflow
+              </span>
+            </div>
+
+            <div class="form-section" style="gap:14px;">
+
+              <div class="yb-card owner">
+                <div class="yb-card-title"><span class="dot"></span>Client Details</div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Yearbook Owner Name *</label>
+                  <input type="text" id="yb-owner-name" class="form-input" placeholder="Enter yearbook owner name">
+                </div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Batch *</label>
+                  <input type="text" id="yb-owner-batch" class="form-input" placeholder="e.g. 2024, 2023, 2025">
+                </div>
+              </div>
+
+              <div class="yb-card owner">
+                <div class="yb-card-title"><span class="dot"></span>Graduate Employability Checker</div>
+                <div class="input-group" style="margin-top:8px;">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Open Checker In-App</label>
+                  <div id="yb-owner-iframe-wrap" style="border-radius:16px;overflow:hidden;border:1.5px solid var(--border);background:var(--white);">
+                    <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      <span style="font-size:12px;font-weight:600;color:var(--text-dark);">Employability Checker</span>
+                      <button onclick="toggleOwnerIframe()" style="margin-left:auto;background:var(--secondary);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Open</button>
+                    </div>
+                    <div id="yb-owner-iframe-container" style="display:none;height:300px;">
+                      <iframe src="https://nton4976-wq.github.io/ubiquitous-couscous/" style="width:100%;height:100%;border:none;" title="Graduate Employability Checker"></iframe>
+                    </div>
+                    <div id="yb-owner-iframe-placeholder" style="padding:40px 20px;text-align:center;color:var(--text-light);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.4;margin-bottom:8px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                      <div style="font-size:12px;">Tap "Open" to load the checker</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="yb-card owner">
+                <div class="yb-card-title"><span class="dot"></span>Documentation</div>
+                <div class="input-group">
+                  <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
+                  <div id="yb-owner-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('owner')">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span>Tap to open camera</span>
+                  </div>
+                  <input type="hidden" id="yb-owner-photo-data" value="">
+                </div>
+              </div>
+
+              <div class="yb-card owner">
+                <div class="yb-card-title"><span class="dot"></span>Office Survey QR Code</div>
+                <div class="yb-qr-display" onclick="openQRModal()" style="cursor:pointer;">
+                  <div class="yb-qr-frame">
+                    <span class="yb-qr-corner tl"></span><span class="yb-qr-corner tr"></span>
+                    <span class="yb-qr-corner bl"></span><span class="yb-qr-corner br"></span>
+                    <img id="yb-owner-qr-img" alt="Office Survey QR" src="">
+                  </div>
+                  <div class="yb-qr-caption">Tap to enlarge QR code. Ask the client to scan with their phone.</div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" onclick="submitYearbookOwner()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                Submit Owner Claim
+              </button>
+
+            </div>
           </div>
-          <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9,18 15,12 9,6"/></svg>
-        </button>
-        <button class="yearbook-option-btn" onclick="openSubScreen('yearbook-owner-screen')">
-          <div class="option-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <div class="option-text">
-            <span class="option-title">Owner</span>
-            <span class="option-desc">Yearbook owner claim and verification</span>
-          </div>
-          <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9,18 15,12 9,6"/></svg>
-        </button>
+        </div>
       </div>
     </div>
 
-    <!-- PICTURE FRAMES TAB -->
-    <div id="tab-picture-frames" class="activity-tab-content">
-      <div class="coming-soon-container">
-        <div class="coming-soon-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" width="64" height="64">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21,15 16,10 5,21"/>
-          </svg>
-        </div>
-        <h3>Picture Frames</h3>
-        <p>This feature is coming soon.</p>
-        <p style="font-size:12px;color:var(--text-light);margin-top:8px;">Stay tuned for updates on picture frame services.</p>
+<div id="tab-picture-frames" class="activity-tab-content">
+  <div class="yearbook-intro" style="padding-bottom:8px;">
+    <div class="yearbook-icon" style="background:rgba(243,156,18,0.08);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f39c12" stroke-width="1.5" width="48" height="48">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    </div>
+    <h3>Picture Frames Claiming</h3>
+    <p>Select a year to process orders, record payments, and collect surveys.</p>
+  </div>
+
+  <!-- Year Switcher -->
+  <div style="display:flex;gap:8px;padding:0 16px 16px;">
+    <button class="yb-filter-chip active" id="pf-btn-2025" onclick="switchPFYear(2025)" style="flex:1;justify-content:center;">2025</button>
+    <button class="yb-filter-chip" id="pf-btn-2026" onclick="switchPFYear(2026)" style="flex:1;justify-content:center;">2026</button>
+  </div>
+
+  <!-- ==================== 2025 FORM ==================== -->
+  <div id="pf-container-2025" class="yearbook-form" style="padding:0 16px 24px;">
+
+    <!-- Payment -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#f39c12;"></span>Payment Details</div>
+      <div class="input-group" style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Balance (₱) *</label>
+        <input type="number" id="pf-balance" class="form-input" placeholder="e.g. 500" min="0" step="0.01">
+      </div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Amount Paid (₱) *</label>
+        <input type="number" id="pf-amount-paid" class="form-input" placeholder="e.g. 250" min="0" step="0.01">
+      </div>
+      <div id="pf-payment-status" style="margin-top:10px;padding:10px 14px;border-radius:12px;font-size:12px;font-weight:600;display:none;"></div>
+
+          <div class="input-group">
+        <select id="pf-2026-status" class="form-select">
+          <option value="Pending">Pending</option>
+          <option value="Partially Paid">Partially Paid</option>
+          <option value="Fully Paid" selected>Fully Paid</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Refunded">Refunded</option>
+        </select>
       </div>
     </div>
 
+
+    <!-- GCash -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#27ae60;"></span>GCash Payment</div>
+      <div class="yb-qr-display" onclick="openPFQRModal('gcash')" style="cursor:pointer;">
+        <div class="yb-qr-frame">
+          <img id="pf-gcash-qr-img" src="gcash-qr.png" alt="GCash QR" style="width:100%;height:100%;object-fit:contain;display:none;" onload="this.style.display='block';if(document.getElementById('pf-gcash-placeholder'))document.getElementById('pf-gcash-placeholder').style.display='none';">
+          <div id="pf-gcash-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 11h.01"/><path d="M8 11h.01"/><path d="M12 11h.01"/></svg>
+            <span style="font-size:12px;color:var(--text-medium);text-align:center;line-height:1.4;">Place <code>gcash-qr.png</code><br>in the same folder as index</span>
+          </div>
+        </div>
+        <div class="yb-qr-caption">Tap to view full size. Client scans to pay via GCash.</div>
+      </div>
+    </div>
+
+    <!-- Survey -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#3498db;"></span>Yearbook Form</div>
+      <div class="yb-qr-display" onclick="openPFQRModal('survey')" style="cursor:pointer;">
+        <div class="yb-qr-frame">
+          <span class="yb-qr-corner tl"></span><span class="yb-qr-corner tr"></span>
+          <span class="yb-qr-corner bl"></span><span class="yb-qr-corner br"></span>
+          <img id="pf-survey-qr-img" alt="Survey QR" src="" style="display:block;">
+        </div>
+        <div class="yb-qr-caption">Tap to enlarge. Ask client to scan and answer the survey.</div>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px;background:var(--bg);border-radius:12px;border:1.5px solid var(--border);">
+          <input type="checkbox" id="pf-survey-answered" style="width:20px;height:20px;accent-color:var(--primary);flex-shrink:0;">
+          <span style="font-size:13px;color:var(--text-dark);font-weight:500;line-height:1.4;">Client has answered the office survey</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Documentation -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#e74c6b;"></span>Documentation</div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
+        <div id="yb-picture-frames-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('picture-frames')">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Tap to open camera</span>
+        </div>
+        <input type="hidden" id="yb-picture-frames-photo-data" value="">
+      </div>
+    </div>
+
+    <!-- Assisted By (2025 style - kept for compatibility) -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#9b59b6;"></span>Assisted By</div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Staff Name</label>
+        <input type="text" id="pf-assisted-by" class="form-input" readonly placeholder="Auto-filled from profile" style="background:var(--bg);opacity:0.8;">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="submitPictureFrames()" style="margin-top:8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+      Submit 2025 Claim
+    </button>
+
+    <!-- Recent 2025 -->
+    <div class="yb-card" style="margin-top:16px;">
+      <div class="yb-card-title"><span class="dot" style="background:#1a9b8a;"></span>Recent 2025 Claims</div>
+      <div id="pf-recent-claims" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ==================== 2026 FORM ==================== -->
+  <div id="pf-container-2026" class="yearbook-form" style="padding:0 16px 24px;display:none;">
+
+    <!-- Order Details -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#f39c12;"></span>Payment Details</div>
+      <div class="input-group" style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Balance (₱) *</label>
+        <input type="number" id="pf-2026-balance" class="form-input" placeholder="e.g. 500" min="0" step="0.01">
+      </div>
+      <div class="input-group" style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Amount Paid (₱) *</label>
+        <input type="number" id="pf-2026-amount-paid" class="form-input" placeholder="e.g. 250" min="0" step="0.01">
+      </div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Status *</label>
+        <select id="pf-2026-status" class="form-select">
+          <option value="Pending">Pending</option>
+          <option value="Partially Paid">Partially Paid</option>
+          <option value="Fully Paid" selected>Fully Paid</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Refunded">Refunded</option>
+        </select>
+      </div>
+      <div id="pf-2026-payment-status" style="margin-top:10px;padding:10px 14px;border-radius:12px;font-size:12px;font-weight:600;display:none;"></div>
+    </div>
+
+    <!-- GCash -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#27ae60;"></span>GCash Payment</div>
+      <div class="yb-qr-display" onclick="openPFQRModal('gcash')" style="cursor:pointer;">
+        <div class="yb-qr-frame">
+          <img id="pf-2026-gcash-qr-img" src="gcash-qr.png" alt="GCash QR" style="width:100%;height:100%;object-fit:contain;display:none;" onload="this.style.display='block';if(document.getElementById('pf-2026-gcash-placeholder'))document.getElementById('pf-2026-gcash-placeholder').style.display='none';">
+          <div id="pf-2026-gcash-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 11h.01"/><path d="M8 11h.01"/><path d="M12 11h.01"/></svg>
+            <span style="font-size:12px;color:var(--text-medium);text-align:center;line-height:1.4;">Place <code>gcash-qr.png</code><br>in the same folder as index</span>
+          </div>
+        </div>
+        <div class="yb-qr-caption">Tap to view full size. Client scans to pay via GCash.</div>
+      </div>
+    </div>
+
+    <!-- Survey -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#3498db;"></span>Yearbook Form</div>
+      <div class="yb-qr-display" onclick="openPFQRModal('survey2026')" style="cursor:pointer;">
+        <div class="yb-qr-frame">
+          <span class="yb-qr-corner tl"></span><span class="yb-qr-corner tr"></span>
+          <span class="yb-qr-corner bl"></span><span class="yb-qr-corner br"></span>
+          <img id="pf-2026-survey-qr-img" alt="Survey QR" src="" style="display:block;">
+        </div>
+        <div class="yb-qr-caption">Tap to enlarge. Ask client to scan and answer the 2026 survey.</div>
+      </div>
+    </div>
+
+    <!-- Documentation -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#e74c6b;"></span>Documentation</div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
+        <div id="yb-pf-2026-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('pf-2026')">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Tap to open camera</span>
+        </div>
+        <input type="hidden" id="yb-pf-2026-photo-data" value="">
+      </div>
+    </div>
+
+        <!-- Assisted By (2025 style - kept for compatibility) -->
+    <div class="yb-card">
+      <div class="yb-card-title"><span class="dot" style="background:#9b59b6;"></span>Assisted By</div>
+      <div class="input-group">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Staff Name</label>
+        <input type="text" id="pf-assisted-by" class="form-input" readonly placeholder="Auto-filled from profile" style="background:var(--bg);opacity:0.8;">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="submitPictureFrames2026()" style="margin-top:8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+      Submit 2026 Claim
+    </button>
+
+    <!-- Recent 2026 -->
+    <div class="yb-card" style="margin-top:16px;">
+      <div class="yb-card-title"><span class="dot" style="background:#1a9b8a;"></span>Recent 2026 Claims</div>
+      <div id="pf-2026-recent-claims" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
+</div>
     <!-- CLEARANCE TAB -->
     <div id="tab-clearance" class="activity-tab-content">
       <div class="coming-soon-container">
@@ -2496,7 +4511,7 @@ html,body{
 </div>
 
 <script>
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxCSZcBNBrW1QEMWXR5D7qk88kJRFmQkfuzwAbHBE2boKkbEfIVJU5oFWslCDA2GsnFaw/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyjOOj6UAcuRFehUuzXv4ENvV4RX8OtCeCtY3W4989OYCblfbD_O4p9sWO_vihWU5vS7g/exec'; // TODO: Replace with your deployed GAS Web App URL (e.g., https://script.google.com/macros/s/.../exec)
 var currentUser = null, currentScreen = 'splash-screen', sessionState = 'morning-in';
 var morningInTime = null, morningOutTime = null, afternoonInTime = null, afternoonOutTime = null;
 var currentYear = new Date().getFullYear(), currentMonth = new Date().getMonth(), selectedDate = new Date().getDate();
@@ -2521,7 +4536,7 @@ function formatChatTime(date){var now=new Date(); var diff=now-date; if(diff<600
 function sha256(str){return new Promise(function(resolve){try{if(!window.crypto||!crypto.subtle){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2));return} crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)).then(function(hash){resolve(Array.from(new Uint8Array(hash)).map(function(b){return b.toString(16).padStart(2,'0')}).join(''))}).catch(function(){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2))})}catch(e){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2))}})}
 
 function queueOfflineAction(action,data){offlineQueue.push({action:action,data:data,timestamp:new Date().toISOString()}); try{localStorage.setItem('offlineQueue',JSON.stringify(offlineQueue))}catch(e){} updateSyncBadge()}
-function processOfflineQueue(){if(!navigator.onLine||offlineQueue.length===0) return; var queue=offlineQueue.slice(); offlineQueue=[]; try{localStorage.setItem('offlineQueue',JSON.stringify([]))}catch(e){} queue.forEach(function(item){if(item.action==='saveAttendance'){apiPost('saveAttendance',item.data,function(resp){if(!resp.success) queueOfflineAction(item.action,item.data)})}}); updateSyncBadge()}
+function processOfflineQueue(){if(!navigator.onLine||offlineQueue.length===0) return; var queue=offlineQueue.slice(); offlineQueue=[]; try{localStorage.setItem('offlineQueue',JSON.stringify([]))}catch(e){} queue.forEach(function(item){if(item.action==='saveAttendance'){apiPost('saveAttendance',item.data,function(resp){if(!resp.success) queueOfflineAction(item.action,item.data)})}else if(item.action==='saveYearbook'){apiPost('saveYearbook',item.data,function(resp){if(!resp.success){queueOfflineAction(item.action,item.data)}else if(resp.success&&resp.photoUrl){updateYearbookRecordPhoto(item.data.timestamp,resp.photoUrl,resp.fileId)}})}else if(item.action==='saveActivity'){apiPost('saveActivity',item.data,function(resp){if(!resp.success) queueOfflineAction(item.action,item.data)})}else if(item.action==='savePictureFrames'){apiPost('savePictureFrames',item.data,function(resp){if(!resp.success){queueOfflineAction(item.action,item.data)}else if(resp.success&&resp.photoUrl){updatePictureFramesRecordPhoto(item.data.timestamp,resp.photoUrl,resp.fileId,item.data.year||'2025')}})}}); updateSyncBadge()}
 function updateSyncBadge(){var badge=document.getElementById('sync-badge'); if(!badge) return; if(offlineQueue.length>0){badge.classList.add('pending')}else{badge.classList.remove('pending')}}
 
 // Silent fetch for polling - NO loading spinner
@@ -2553,10 +4568,13 @@ function runServer(fnName, payload, callback, silent){
     callback({success:false,error:'WEB_APP_URL not configured'});
     return;
   }
-  var actionMap = {
+var actionMap = {
     handleSignup:'signup', handleLogin:'login', handleSaveAttendance:'saveAttendance',
     handleSaveChat:'saveChat', handleGetAttendance:'getAttendance', handleGetChat:'getChat',
-    handleGetTeam:'getTeam', handleGetConversations:'getConversations'
+    handleGetTeam:'getTeam', handleGetConversations:'getConversations',
+    handleSaveActivity:'saveActivity', handleGetActivity:'getActivity',
+    handleSavePictureFrames:'savePictureFrames', handleGetPictureFrames:'getPictureFrames',
+    handleGetSummary:'getSummary'
   };
   var action = actionMap[fnName] || fnName;
   var isGetAction = (action==='getAttendance'||action==='getChat'||action==='getTeam'||action==='getConversations');
@@ -2596,6 +4614,10 @@ function apiCall(action, data, callback, silent){
   else if(action==='getChat') fnName='handleGetChat';
   else if(action==='getTeam') fnName='handleGetTeam';
   else if(action==='getConversations') fnName='handleGetConversations';
+  else if(action==='getYearbook') fnName='handleGetYearbook';
+  else if(action==='getActivity') fnName='handleGetActivity';
+  else if(action==='getPictureFrames') fnName='handleGetPictureFrames';
+  else if(action==='getSummary') fnName='handleGetSummary';
   else return callback({success:false,error:'Unknown action: '+action});
   runServer(fnName, data, callback, silent);
 }
@@ -2606,6 +4628,9 @@ function apiPost(action, data, callback){
   else if(action==='login') fnName='handleLogin';
   else if(action==='saveAttendance') fnName='handleSaveAttendance';
   else if(action==='saveChat') fnName='handleSaveChat';
+  else if(action==='saveYearbook') fnName='handleSaveYearbook';
+  else if(action==='saveActivity') fnName='handleSaveActivity';
+  else if(action==='savePictureFrames') fnName='handleSavePictureFrames';
   else return callback({success:false,error:'Unknown action: '+action});
   runServer(fnName, data, callback, false);
 }
@@ -2725,80 +4750,207 @@ function closeSubScreen(screenId){var screen=document.getElementById(screenId); 
 // ============================================================
 // QR SCANNER
 // ============================================================
-function openScanner(){
+// ============================================================
+// LOCATION-BASED CHECK-IN (Replaces QR Scanner)
+// ============================================================
+
+// Office location configuration - ADJUST THESE VALUES for your office
+var OFFICE_LOCATION = {
+  lat: 12.402277962336418,   // Default: Manila area - CHANGE TO YOUR OFFICE LATITUDE
+  lng: 121.98698682030003,  // Default: Manila area - CHANGE TO YOUR OFFICE LONGITUDE
+  radius: 100     // Radius in meters (100m = office premises)
+};
+
+var locationWatchId = null;
+var isCheckingLocation = false;
+
+function openLocationCheck(){
   if(!currentUser){showError('Please log in first'); return}
-  document.getElementById('qr-overlay').classList.add('active');
-  document.getElementById('scanner-error').textContent='';
-  if(!html5QrCode) html5QrCode=new Html5Qrcode('qr-reader');
-  isScanning=true;
-  html5QrCode.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:250}},onScanSuccess,onScanFailure).catch(function(err){
-    console.error(err);
-    document.getElementById('scanner-error').textContent='Camera access denied or not available.';
-    isScanning=false;
-  })
-}
+  if(isWeekend()){showError('No work scheduled on weekends!'); return}
 
-function closeScanner(){
-  document.getElementById('qr-overlay').classList.remove('active');
-  document.getElementById('scanner-error').textContent='';
-  if(html5QrCode&&isScanning){
-    html5QrCode.stop().then(function(){isScanning=false}).catch(function(){isScanning=false})
-  }
-}
+  showLocationCheckUI('verifying');
+  document.getElementById('location-check-overlay').classList.add('active');
+  isCheckingLocation = true;
 
-function onScanSuccess(decodedText) {
-  if (!isScanning) return;
-  closeScanner();
-
-  // 1. Validate it's a TIME QR code
-  if (!decodedText.startsWith('TIME:')) {
-    showError('Invalid QR code. Please scan an official TIME Attendance QR code.');
+  // Check if geolocation is supported
+  if(!navigator.geolocation){
+    showLocationError('Geolocation is not supported by your browser.');
     return;
   }
 
-  // 2. Extract the day from QR data (format: TIME:DAY:MONDAY)
-  var qrDay = null;
-  if (decodedText.includes('DAY:')) {
-    qrDay = decodedText.split('DAY:')[1];
-  }
+  // Request location with high accuracy
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 15000,
+    maximumAge: 0
+  };
 
-  // 3. Get today's day name
-  var today = new Date();
-  var dayNames = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-  var todayName = dayNames[today.getDay()];
-
-  // 4. Validate day match
-  if (qrDay && qrDay !== todayName) {
-    showError('Wrong day! This QR code is for ' + qrDay + '. Today is ' + todayName + '.');
-    return;
-  }
-
-  // 5. Block weekend scanning
-  if (isWeekend()) {
-    showError('No work scheduled on weekends!');
-    return;
-  }
-
-  // 6. All validations passed — proceed with clock action (this records to DB)
-  processClockAction();
+  navigator.geolocation.getCurrentPosition(
+    onLocationSuccess,
+    onLocationError,
+    options
+  );
 }
 
+function onLocationSuccess(position){
+  if(!isCheckingLocation) return;
 
+  var userLat = position.coords.latitude;
+  var userLng = position.coords.longitude;
+  var accuracy = position.coords.accuracy;
 
-function onScanFailure(){}
+  // Calculate distance from office
+  var distance = calculateDistance(userLat, userLng, OFFICE_LOCATION.lat, OFFICE_LOCATION.lng);
+
+  // Check if within office radius (add accuracy buffer)
+  var effectiveRadius = OFFICE_LOCATION.radius + accuracy;
+  var isInOffice = distance <= effectiveRadius;
+
+  if(isInOffice){
+    // Location verified - proceed with attendance
+    showLocationCheckUI('success', {
+      distance: Math.round(distance),
+      accuracy: Math.round(accuracy),
+      lat: userLat.toFixed(6),
+      lng: userLng.toFixed(6)
+    });
+
+    // Wait a moment to show success, then record attendance
+    setTimeout(function(){
+      if(isCheckingLocation){
+        closeLocationCheck();
+        processClockAction();
+      }
+    }, 1500);
+  } else {
+    // Outside office radius
+    showLocationCheckUI('error', {
+      distance: Math.round(distance),
+      accuracy: Math.round(accuracy),
+      radius: OFFICE_LOCATION.radius,
+      lat: userLat.toFixed(6),
+      lng: userLng.toFixed(6)
+    });
+  }
+}
+
+function onLocationError(error){
+  if(!isCheckingLocation) return;
+
+  var errorMsg = 'Unable to retrieve your location.';
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      errorMsg = 'Location access denied. Please allow location permission to record attendance.';
+      break;
+    case error.POSITION_UNAVAILABLE:
+      errorMsg = 'Location information unavailable. Please check your GPS settings.';
+      break;
+    case error.TIMEOUT:
+      errorMsg = 'Location request timed out. Please try again.';
+      break;
+  }
+  showLocationError(errorMsg);
+}
+
+function showLocationCheckUI(status, data){
+  var icon = document.getElementById('location-check-icon');
+  var title = document.getElementById('location-check-title');
+  var desc = document.getElementById('location-check-desc');
+  var statusEl = document.getElementById('location-check-status');
+  var details = document.getElementById('location-check-details');
+  var cancelBtn = document.getElementById('location-check-cancel-btn');
+  var retryBtn = document.getElementById('location-check-retry-btn');
+
+  if(status === 'verifying'){
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>';
+    icon.style.background = 'linear-gradient(135deg,var(--primary),var(--secondary))';
+    title.textContent = 'Checking Location...';
+    desc.textContent = 'Please wait while we verify your office location.';
+    statusEl.className = 'location-check-status verifying';
+    statusEl.innerHTML = '<span class="location-check-spinner"></span><span>Verifying GPS location...</span>';
+    details.style.display = 'none';
+    cancelBtn.style.display = 'block';
+    retryBtn.style.display = 'none';
+  } else if(status === 'success'){
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>';
+    icon.style.background = 'linear-gradient(135deg,#27ae60,#2ecc71)';
+    title.textContent = 'Location Verified!';
+    desc.textContent = 'You are within the office premises. Recording attendance...';
+    statusEl.className = 'location-check-status success';
+    statusEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg><span>Within office radius (' + (data ? data.distance : '0') + 'm)</span>';
+    if(data){
+      details.innerHTML = '<strong>Location Details:</strong><br>Distance from office: ' + data.distance + 'm<br>GPS Accuracy: ±' + data.accuracy + 'm<br>Coordinates: ' + data.lat + ', ' + data.lng;
+      details.style.display = 'block';
+    }
+    cancelBtn.style.display = 'none';
+    retryBtn.style.display = 'none';
+  } else if(status === 'error'){
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+    icon.style.background = 'linear-gradient(135deg,#e74c6b,#c0392b)';
+    title.textContent = 'Outside Office Premises';
+    desc.textContent = 'You must be within the office location to record attendance.';
+    statusEl.className = 'location-check-status error';
+    statusEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>' + (data ? data.distance + 'm from office' : 'Location not in range') + '</span>';
+    if(data){
+      details.innerHTML = '<strong>Location Details:</strong><br>Distance from office: ' + data.distance + 'm<br>Office radius: ' + data.radius + 'm<br>GPS Accuracy: ±' + data.accuracy + 'm<br>Coordinates: ' + data.lat + ', ' + data.lng + '<br><br><em style="color:var(--danger);">You are too far from the office to record attendance.</em>';
+      details.style.display = 'block';
+    }
+    cancelBtn.style.display = 'none';
+    retryBtn.style.display = 'block';
+  }
+}
+
+function showLocationError(msg){
+  showLocationCheckUI('error');
+  document.getElementById('location-check-desc').textContent = msg;
+  document.getElementById('location-check-status').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>Location Error</span>';
+  document.getElementById('location-check-details').innerHTML = '<em style="color:var(--danger);">' + msg + '</em>';
+  document.getElementById('location-check-details').style.display = 'block';
+  document.getElementById('location-check-cancel-btn').style.display = 'none';
+  document.getElementById('location-check-retry-btn').style.display = 'block';
+}
+
+function closeLocationCheck(){
+  document.getElementById('location-check-overlay').classList.remove('active');
+  isCheckingLocation = false;
+}
+
+function retryLocationCheck(){
+  openLocationCheck();
+}
+
+// Haversine formula to calculate distance between two coordinates in meters
+function calculateDistance(lat1, lng1, lat2, lng2){
+  var R = 6371000; // Earth radius in meters
+  var dLat = deg2rad(lat2 - lat1);
+  var dLng = deg2rad(lng2 - lng1);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+          Math.sin(dLng/2) * Math.sin(dLng/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function deg2rad(deg){
+  return deg * (Math.PI / 180);
+}
+
 
 // ============================================================
 // ATTENDANCE
 // ============================================================
 function saveDailyState(){
   if(!currentUser) return;
+  var todayRec=attendanceRecords[getDateKey()]||{};
   var state={
     sessionState:sessionState,
     morningInTime:morningInTime?morningInTime.toISOString():null,
     morningOutTime:morningOutTime?morningOutTime.toISOString():null,
     afternoonInTime:afternoonInTime?afternoonInTime.toISOString():null,
     afternoonOutTime:afternoonOutTime?afternoonOutTime.toISOString():null,
-    date:getDateKey(),userId:currentUser.userId
+    date:getDateKey(),userId:currentUser.userId,
+    status:todayRec.status||null,
+    overtime:todayRec.overtime||null
   };
   try{localStorage.setItem(STATE_KEY,JSON.stringify(state))}catch(e){}
 }
@@ -2814,7 +4966,27 @@ function loadDailyState(){
     if(state.morningOutTime) morningOutTime=new Date(state.morningOutTime);
     if(state.afternoonInTime) afternoonInTime=new Date(state.afternoonInTime);
     if(state.afternoonOutTime) afternoonOutTime=new Date(state.afternoonOutTime);
+    // Reconstruct today's attendance record so Attendance screen shows data before server responds
+    var todayKey=getDateKey();
+    if(!attendanceRecords[todayKey]) attendanceRecords[todayKey]={};
+    if(morningInTime) attendanceRecords[todayKey].morningIn=formatTime(morningInTime);
+    if(morningOutTime) attendanceRecords[todayKey].morningOut=formatTime(morningOutTime);
+    if(afternoonInTime) attendanceRecords[todayKey].afternoonIn=formatTime(afternoonInTime);
+    if(afternoonOutTime) attendanceRecords[todayKey].afternoonOut=formatTime(afternoonOutTime);
+    if(state.status) attendanceRecords[todayKey].status=state.status;
+    if(state.overtime) attendanceRecords[todayKey].overtime=state.overtime;
+    if(state.workingHours) attendanceRecords[todayKey].workingHours=state.workingHours;
+    if(sessionState==='complete'&&!attendanceRecords[todayKey].status) attendanceRecords[todayKey].status='Present';
   }catch(e){}
+}
+
+
+function closeScanner(){
+  document.getElementById('qr-overlay').classList.remove('active');
+  document.getElementById('scanner-error').textContent='';
+  if(html5QrCode&&isScanning){
+    html5QrCode.stop().then(function(){isScanning=false}).catch(function(){isScanning=false})
+  }
 }
 
 function processClockAction(){
@@ -2836,10 +5008,12 @@ function processClockAction(){
   }else if(sessionState==='afternoon-out'){
     afternoonOutTime=now; document.getElementById('stat-afternoon-out').textContent=timeStr;
     var totalMs=0; if(morningInTime&&morningOutTime) totalMs+=(morningOutTime-morningInTime); if(afternoonInTime&&afternoonOutTime) totalMs+=(afternoonOutTime-afternoonInTime);
-    var totalHrs=Math.floor(totalMs/3600000), totalMins=Math.floor((totalMs%3600000)/60000); document.getElementById('stat-working').textContent=totalHrs+':'+totalMins.toString().padStart(2,'0');
+    var totalHrs=Math.floor(totalMs/3600000), totalMins=Math.floor((totalMs%3600000)/60000);
+    var workingHrsStr=totalHrs+'h '+totalMins.toString().padStart(2,'0')+'m';
+    document.getElementById('stat-working').textContent=workingHrsStr;
     var isOvertime=isFriday||(hours>18)||(hours===18&&mins>=30); document.getElementById('stat-overtime').textContent=isOvertime?'Yes':'No'; sessionState='complete'; updateButtonForState(); saveDailyState();
-    showSuccessModal(isOvertime?'Afternoon Check-Out (Overtime)':'Afternoon Check-Out','Recorded at '+timeStr+'. Total: '+totalHrs+'h '+totalMins+'m'+(isOvertime?'. Overtime recorded!':''));
-    saveAttendance({date:dateKey,afternoonOut:timeStr,overtime:isOvertime?'Yes':'No',status:isOvertime?'Overtime':(todayData.status||'Present')});
+    showSuccessModal(isOvertime?'Afternoon Check-Out (Overtime)':'Afternoon Check-Out','Recorded at '+timeStr+'. Total: '+workingHrsStr+(isOvertime?'. Overtime recorded!':''));
+    saveAttendance({date:dateKey,afternoonOut:timeStr,overtime:isOvertime?'Yes':'No',status:isOvertime?'Overtime':(todayData.status||'Present'),workingHours:workingHrsStr});
     if(navigator.vibrate) navigator.vibrate([50,30,50,30,50]);
   }
 }
@@ -2847,10 +5021,11 @@ function processClockAction(){
 function saveAttendance(data){
   if(!currentUser) return;
   var payload=Object.assign({userId:currentUser.userId,email:currentUser.email},data);
+  // Always update local records immediately so Attendance screen stays in sync
+  updateLocalAttendance(data);
   if(!navigator.onLine){
     queueOfflineAction('saveAttendance',payload);
     showError('Saved offline. Will sync when online.');
-    updateLocalAttendance(data);
     return;
   }
   apiPost('saveAttendance',payload,function(resp){
@@ -2868,6 +5043,7 @@ function updateLocalAttendance(data){
     if(data.afternoonOut) attendanceRecords[data.date].afternoonOut=data.afternoonOut;
     if(data.status) attendanceRecords[data.date].status=data.status;
     if(data.overtime) attendanceRecords[data.date].overtime=data.overtime;
+    if(data.workingHours) attendanceRecords[data.date].workingHours=data.workingHours;
   }
   renderCalendar(); renderAttendanceList(); updateProfileStats();
 }
@@ -2876,7 +5052,10 @@ function loadAttendanceFromServer(){
   if(!currentUser) return;
   apiCall('getAttendance',{userId:currentUser.userId,email:currentUser.email},function(resp){
     try{
-      if(resp.success&&resp.records){
+      if(resp.success && resp.records && resp.records.length > 0){
+        // Preserve today's local record before merging so unsynced clock data isn't lost
+        var todayKey = getDateKey();
+        var todayLocal = attendanceRecords[todayKey] ? JSON.parse(JSON.stringify(attendanceRecords[todayKey])) : null;
         attendanceRecords={};
         for(var i=0;i<resp.records.length;i++){
           var r=resp.records[i];
@@ -2885,6 +5064,17 @@ function loadAttendanceFromServer(){
             afternoonIn:r.afternoonIn,afternoonOut:r.afternoonOut,
             method:r.method,overtime:r.overtime==='Yes'
           };
+        }
+        // Merge back any local-only fields for today that the server doesn't have yet
+        if(todayLocal){
+          if(!attendanceRecords[todayKey]) attendanceRecords[todayKey]={};
+          var srv=attendanceRecords[todayKey];
+          if(todayLocal.morningIn && !srv.morningIn) srv.morningIn=todayLocal.morningIn;
+          if(todayLocal.morningOut && !srv.morningOut) srv.morningOut=todayLocal.morningOut;
+          if(todayLocal.afternoonIn && !srv.afternoonIn) srv.afternoonIn=todayLocal.afternoonIn;
+          if(todayLocal.afternoonOut && !srv.afternoonOut) srv.afternoonOut=todayLocal.afternoonOut;
+          if(todayLocal.status) srv.status=todayLocal.status;
+          if(todayLocal.overtime) srv.overtime=todayLocal.overtime;
         }
         renderCalendar(); renderAttendanceList(); updateProfileStats(); updateButtonForState();
       }
@@ -2909,7 +5099,7 @@ function updateButtonForState(){
     if(statusCard) statusCard.classList.add('ready');
     if(statusTitle) statusTitle.textContent='Ready for Morning';
     if(statusDesc) statusDesc.textContent='Scan QR to check in';
-    if(scanHint) scanHint.textContent='Morning shift: 7:00 AM - 12:00 PM (Late after 7:05 AM)';
+    if(scanHint) scanHint.textContent='Tap button to record attendance. Must be within office premises.';
   }else if(sessionState==='morning-out'){
     btn.classList.add('lunch-out'); btnText.textContent='Morning Out';
     if(statusCard) statusCard.classList.add('success');
@@ -2967,6 +5157,21 @@ function updateProfileStats(){
   el=document.getElementById('summary-late'); if(el) el.textContent=late+' Late';
   el=document.getElementById('summary-absent'); if(el) el.textContent='0 Absent';
   el=document.getElementById('summary-overtime'); if(el) el.textContent=overtime+' OT';
+}
+
+function loadSummaryFromServer(){
+  if(!currentUser) return;
+  apiCall('getSummary', { userId: currentUser.userId, email: currentUser.email }, function(resp){
+    if(resp.success && resp.summary){
+      var s = resp.summary;
+      var el;
+      el=document.getElementById('stat-working'); if(el) el.textContent=s.totalFormatted || '0h 00m';
+      el=document.getElementById('stat-overtime'); if(el) el.textContent=(s.overtimeCount > 0 ? s.overtimeCount + 'x' : 'No');
+      el=document.getElementById('stat-present'); if(el) el.textContent=s.presentCount || 0;
+      el=document.getElementById('stat-late'); if(el) el.textContent=s.lateCount || 0;
+      el=document.getElementById('stat-overtime-count'); if(el) el.textContent=s.overtimeCount || 0;
+    }
+  }, true);
 }
 
 function updateTime(){
@@ -3262,7 +5467,7 @@ function updateChatBadge() {
   for (var i = 0; i < conversations.length; i++) {
     total += (conversations[i].unreadCount || 0);
   }
-  var ids = ['chat-badge-home', 'chat-badge-chat'];
+  var ids = ['chat-badge', 'chat-badge-chat'];
   ids.forEach(function(id) {
     var badge = document.getElementById(id);
     if (badge) {
@@ -3732,12 +5937,113 @@ function saveActivitiesStore(){try{localStorage.setItem(ACT_STORAGE_KEY,JSON.str
 function openActivityModal(){document.getElementById('act-input-title').value=''; document.getElementById('act-input-desc').value=''; document.getElementById('act-input-date').value=new Date().toISOString().slice(0,10); activityCategory='work'; document.querySelectorAll('#act-cat-pick .act-cat-opt').forEach(function(opt){opt.classList.toggle('active',opt.getAttribute('data-cat')==='work')}); document.getElementById('activity-modal').classList.add('active'); setTimeout(function(){document.getElementById('act-input-title').focus()},200)}
 function closeActivityModal(){document.getElementById('activity-modal').classList.remove('active')}
 function selectActCat(el){activityCategory=el.getAttribute('data-cat'); document.querySelectorAll('#act-cat-pick .act-cat-opt').forEach(function(opt){opt.classList.remove('active')}); el.classList.add('active')}
-function saveActivity(){var title=document.getElementById('act-input-title').value.trim(), desc=document.getElementById('act-input-desc').value.trim(), dateVal=document.getElementById('act-input-date').value; if(!title){showError('Please enter what you accomplished'); return} if(!dateVal){showError('Please select a date'); return} var now=new Date(); activities.unshift({id:Date.now(),title:title,desc:desc,category:activityCategory,date:dateVal,time:now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),done:false,createdAt:now.getTime()}); saveActivitiesStore(); closeActivityModal(); renderActivities()}
+function saveActivity(){
+  var title=document.getElementById('act-input-title').value.trim();
+  var desc=document.getElementById('act-input-desc').value.trim();
+  var dateVal=document.getElementById('act-input-date').value;
+  if(!title){showError('Please enter what you accomplished'); return}
+  if(!dateVal){showError('Please select a date'); return}
+  var now=new Date();
+  var localId = Date.now();
+  activities.unshift({id:localId,title:title,desc:desc,category:activityCategory,date:dateVal,time:now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),done:false,createdAt:now.getTime()});
+  saveActivitiesStore();
+  closeActivityModal();
+  renderActivities();
+  if(currentUser && navigator.onLine){
+    apiPost('saveActivity',{
+      action:'saveActivity',
+      email:currentUser.email,
+      userId:currentUser.userId,
+      title:title,
+      description:desc,
+      category:activityCategory,
+      date:dateVal,
+      done:false
+    },function(resp){
+      if(!resp.success){
+        showError('Activity save failed: '+(resp.error||'Server error')+'. Will retry when online.');
+        queueOfflineAction('saveActivity',{
+          action:'saveActivity',
+          email:currentUser.email,
+          userId:currentUser.userId,
+          title:title,
+          description:desc,
+          category:activityCategory,
+          date:dateVal,
+          done:false
+        });
+      } else {
+        syncActivitiesFromServer(function(){ renderActivities(); });
+      }
+    });
+  } else if(!navigator.onLine){
+    queueOfflineAction('saveActivity',{
+      action:'saveActivity',
+      email:currentUser.email,
+      userId:currentUser.userId,
+      title:title,
+      description:desc,
+      category:activityCategory,
+      date:dateVal,
+      done:false
+    });
+    showError('Saved offline. Will sync when online.');
+  }
+}
 function toggleActivity(id){for(var i=0;i<activities.length;i++){if(activities[i].id===id){activities[i].done=!activities[i].done; break}} saveActivitiesStore(); renderActivities()}
 function deleteActivity(id){activities=activities.filter(function(a){return a.id!==id}); saveActivitiesStore(); renderActivities()}
 function formatActDay(dateStr){var d=new Date(dateStr+'T00:00:00'), today=new Date(); today.setHours(0,0,0,0); var yest=new Date(today); yest.setDate(yest.getDate()-1); if(d.getTime()===today.getTime()) return 'Today'; if(d.getTime()===yest.getTime()) return 'Yesterday'; return d.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'})}
 function getActivityStreak(){var streak=0, today=new Date(); today.setHours(0,0,0,0); var check=new Date(today); while(true){var key=formatDate(check); var has=activities.some(function(a){return a.date===key}); if(has){streak++}else if(check.getTime()!==today.getTime()){break} check.setDate(check.getDate()-1)} return streak}
+function syncActivitiesFromServer(callback){
+  callback = callback || function(){};
+  if(!currentUser || !navigator.onLine) { callback(); return; }
+  apiCall('getActivity', { email: currentUser.email }, function(resp){
+    if(resp.success && resp.records && resp.records.length > 0){
+      var local = activities.slice();
+      var merged = [];
+      var localMap = {};
+      for(var i=0;i<local.length;i++){
+        var key = (local[i].title||'') + '|' + (local[i].date||'') + '|' + (local[i].category||'');
+        localMap[key] = local[i];
+      }
+      for(var j=0;j<resp.records.length;j++){
+        var sr = resp.records[j];
+        var key = (sr.title||'') + '|' + (sr.date||'') + '|' + (sr.category||'');
+        if(localMap[key]){
+          var mergedRec = JSON.parse(JSON.stringify(localMap[key]));
+          mergedRec.done = sr.done;
+          merged.push(mergedRec);
+          delete localMap[key];
+        } else {
+          merged.push({
+            id: Date.now() + j,
+            title: sr.title,
+            desc: sr.description,
+            category: sr.category,
+            date: sr.date,
+            time: sr.timestamp ? new Date(sr.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '',
+            done: sr.done,
+            createdAt: sr.timestamp ? new Date(sr.timestamp).getTime() : Date.now()
+          });
+        }
+      }
+      for(var k in localMap){
+        if(localMap.hasOwnProperty(k)) merged.push(localMap[k]);
+      }
+      merged.sort(function(a,b){ return b.createdAt - a.createdAt; });
+      activities = merged;
+      saveActivitiesStore();
+    }
+    callback();
+  }, true);
+}
+
 function renderActivities(){
+  syncActivitiesFromServer(function(){
+    _doRenderActivities();
+  });
+}
+function _doRenderActivities(){
   var list=document.getElementById('activities-list'); if(!list) return;
   var today=new Date().toISOString().slice(0,10), weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-6); weekAgo.setHours(0,0,0,0); var monthStart=new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
   var todayCount=0, weekCount=0, monthCount=0, doneCount=0;
@@ -3762,10 +6068,12 @@ function renderActivities(){
   }
   list.innerHTML=html;
 }
+
+
 function filterActivitiesByDate(){renderActivities()} function clearActivityDateFilter(){var el=document.getElementById('act-filter-date'); if(el) el.value=''; renderActivities()} function setActivityFilterToday(){var el=document.getElementById('act-filter-date'); if(el) el.value=new Date().toISOString().slice(0,10); renderActivities()}
 
 function handleBackButton(e){
-  if(document.getElementById('qr-overlay').classList.contains('active')){e.preventDefault(); closeScanner(); return}
+  if(document.getElementById('location-check-overlay').classList.contains('active')){e.preventDefault(); closeLocationCheck(); return}
   if(document.getElementById('success-modal').classList.contains('active')){e.preventDefault(); closeSuccessModal(); return}
   if(document.getElementById('activity-modal').classList.contains('active')){e.preventDefault(); closeActivityModal(); return}
   var activeSub=document.querySelector('.sub-screen.active');
@@ -3809,6 +6117,7 @@ document.addEventListener('DOMContentLoaded',function(){
     loadActivities();
     loadDailyState();
     loadSettings();
+
     updateSyncBadge();
     var isLoggedIn=checkLoggedIn();
     setTimeout(function(){
@@ -3818,6 +6127,8 @@ document.addEventListener('DOMContentLoaded',function(){
           loadAttendanceFromServer();
           loadTeamFromServer();
           loadConversations();
+          loadSummaryFromServer();
+          syncActivitiesFromServer();
           requestNotificationPermission();
           startChatPolling();
         },100);
@@ -3838,6 +6149,13 @@ document.addEventListener('DOMContentLoaded',function(){
     console.error('FATAL init error:',e);
     document.getElementById('splash-screen').classList.add('active');
   }
+  // ADD THESE LINES:  
+  var pf26Balance = document.getElementById('pf-2026-balance');
+  var pf26Paid = document.getElementById('pf-2026-amount-paid');
+  var pf26Status = document.getElementById('pf-2026-status');
+  if(pf26Balance) pf26Balance.addEventListener('input', calculatePF2026Balance);
+  if(pf26Paid) pf26Paid.addEventListener('input', calculatePF2026Balance);
+  if(pf26Status) pf26Status.addEventListener('change', calculatePF2026Balance);
 });
 
 
@@ -3878,10 +6196,89 @@ function switchActivityTab(tabName) {
   });
   var target = document.getElementById('tab-' + tabName);
   if (target) target.classList.add('active');
+  
   if (tabName === 'yearbook') {
-    setTimeout(fillYearbookAssistedFields, 100);
+    setTimeout(function(){
+      showYearbookMenu();
+      fillYearbookAssistedFields();
+    }, 100);
+  }
+  if (tabName === 'picture-frames') {
+    setTimeout(function(){
+      switchPFYear(2025); // default to 2025
+    }, 100);
   }
 }
+
+// ===== YEARBOOK INLINE NAVIGATION =====
+function showYearbookMenu(){
+  var menu = document.getElementById('yb-menu');
+  var auth = document.getElementById('yearbook-authorize-screen');
+  var owner = document.getElementById('yearbook-owner-screen');
+  if(menu) menu.style.display = 'block';
+  if(auth) auth.style.display = 'none';
+  if(owner) owner.style.display = 'none';
+}
+function showYearbookAuthorize(){
+  var menu = document.getElementById('yb-menu');
+  var auth = document.getElementById('yearbook-authorize-screen');
+  var owner = document.getElementById('yearbook-owner-screen');
+  if(menu) menu.style.display = 'none';
+  if(auth) auth.style.display = 'block';
+  if(owner) owner.style.display = 'none';
+  fillYearbookAssistedFields();
+  setTimeout(loadOfficeSurveyQRs, 50);
+}
+function showYearbookOwner(){
+  var menu = document.getElementById('yb-menu');
+  var auth = document.getElementById('yearbook-authorize-screen');
+  var owner = document.getElementById('yearbook-owner-screen');
+  if(menu) menu.style.display = 'none';
+  if(auth) auth.style.display = 'none';
+  if(owner) owner.style.display = 'block';
+  fillYearbookAssistedFields();
+  setTimeout(loadOfficeSurveyQRs, 50);
+}
+
+
+// ===== YEARBOOK DEMO FUNCTIONS =====
+
+function toggleAuthIframe() {
+  var container = document.getElementById('yb-auth-iframe-container');
+  var placeholder = document.getElementById('yb-auth-iframe-placeholder');
+  var btn = document.querySelector('#yb-auth-iframe-wrap button');
+  if (container && placeholder && btn) {
+    if (container.style.display === 'none') {
+      container.style.display = 'block';
+      placeholder.style.display = 'none';
+      btn.textContent = 'Close';
+    } else {
+      container.style.display = 'none';
+      placeholder.style.display = 'block';
+      btn.textContent = 'Open';
+    }
+  }
+}
+
+function toggleOwnerIframe() {
+  var container = document.getElementById('yb-owner-iframe-container');
+  var placeholder = document.getElementById('yb-owner-iframe-placeholder');
+  var btn = document.querySelector('#yb-owner-iframe-wrap button');
+  if (container && placeholder && btn) {
+    if (container.style.display === 'none') {
+      container.style.display = 'block';
+      placeholder.style.display = 'none';
+      btn.textContent = 'Close';
+    } else {
+      container.style.display = 'none';
+      placeholder.style.display = 'block';
+      btn.textContent = 'Open';
+    }
+  }
+}
+
+// ===== YEARBOOK DEMO CLIENTS =====
+
 
 // ===== YEARBOOK CAMERA SYSTEM =====
 var ybCameraStream = null;
@@ -4018,51 +6415,113 @@ function fillYearbookAssistedFields() {
 function submitYearbookAuthorize() {
   var person = document.getElementById('yb-auth-person').value.trim();
   var owner = document.getElementById('yb-auth-owner').value.trim();
-  var assisted = document.getElementById('yb-auth-assisted').value.trim();
-  var qrResult = document.getElementById('yb-auth-qr-result');
-  var qrValue = qrResult ? qrResult.getAttribute('data-qr-value') : '';
+  var batch = document.getElementById('yb-auth-batch').value.trim();
   var photoData = document.getElementById('yb-auth-photo-data').value;
-  if (!person || !owner) { showError('Please fill in all required fields'); return; }
+  if (!person || !owner || !batch) { showError('Please fill in all required fields'); return; }
   if (!photoData) { showError('Please take a documentation photo'); return; }
-  var payload = {
-    type: 'yearbook_authorize', authorizePerson: person, yearbookOwner: owner,
-    assistedBy: assisted, qrCode: qrValue || '', photoData: photoData,
-    timestamp: new Date().toISOString(),
-    userId: currentUser ? currentUser.userId : '', email: currentUser ? currentUser.email : ''
-  };
-  saveYearbookRecord(payload);
-  showSuccessModal('Authorization Submitted', 'Yearbook authorization has been recorded successfully.');
-  document.getElementById('yb-auth-person').value = '';
-  document.getElementById('yb-auth-owner').value = '';
-  document.getElementById('yb-auth-photo-data').value = '';
-  if (qrResult) { qrResult.textContent = ''; qrResult.style.display = 'none'; qrResult.removeAttribute('data-qr-value'); }
-  var photoPreview = document.getElementById('yb-auth-photo-preview');
-  if (photoPreview) { photoPreview.classList.remove('has-photo'); photoPreview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>'; }
+  showLoading();
+  compressPhoto(photoData, 1280, 0.8).then(function(compressed){
+    var localPayload = {
+      type: 'yearbook_authorize', authorizePerson: person, yearbookOwner: owner,
+      batch: batch, photoData: compressed,
+      timestamp: new Date().toISOString(),
+      userId: currentUser ? currentUser.userId : '', email: currentUser ? currentUser.email : ''
+    };
+    saveYearbookRecord(localPayload);
+    if (currentUser && navigator.onLine) {
+      var serverPayload = {
+        action: 'saveYearbook',
+        type: 'yearbook_authorize',
+        authorizePerson: person,
+        yearbookOwner: owner,
+        batch: batch,
+        assistedBy: currentUser.firstName + ' ' + currentUser.lastName,
+        email: currentUser.email,
+        userId: currentUser.userId,
+        photoData: compressed
+      };
+      apiPost('saveYearbook', serverPayload, function(resp) {
+        hideLoading();
+        if (!resp.success) {
+          showError('Server save failed: ' + (resp.error || 'Unknown error'));
+          queueOfflineAction('saveYearbook', serverPayload);
+        } else {
+          if (resp.photoUrl) {
+            updateYearbookRecordPhoto(localPayload.timestamp, resp.photoUrl, resp.fileId);
+          } else if (compressed.length > 100) {
+            showError('Text saved, but photo upload failed. Run testDriveAccess() in Apps Script, then re-deploy.');
+            queueOfflineAction('saveYearbook', serverPayload);
+          }
+        }
+      });
+    } else {
+      hideLoading();
+      queueOfflineAction('saveYearbook', localPayload);
+      showError('Saved offline. Will sync when online.');
+    }
+    showSuccessModal('Authorization Submitted', 'Yearbook authorization has been recorded successfully.');
+    document.getElementById('yb-auth-person').value = '';
+    document.getElementById('yb-auth-owner').value = '';
+    document.getElementById('yb-auth-batch').value = '';
+    document.getElementById('yb-auth-photo-data').value = '';
+    var photoPreview = document.getElementById('yb-auth-photo-preview');
+    if (photoPreview) { photoPreview.classList.remove('has-photo'); photoPreview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>'; }
+  });
 }
 
 function submitYearbookOwner() {
-  var person = document.getElementById('yb-owner-person').value.trim();
   var owner = document.getElementById('yb-owner-name').value.trim();
-  var assisted = document.getElementById('yb-owner-assisted').value.trim();
-  var qrResult = document.getElementById('yb-owner-qr-result');
-  var qrValue = qrResult ? qrResult.getAttribute('data-qr-value') : '';
+  var batch = document.getElementById('yb-owner-batch').value.trim();
   var photoData = document.getElementById('yb-owner-photo-data').value;
-  if (!person || !owner) { showError('Please fill in all required fields'); return; }
+  if (!owner || !batch) { showError('Please fill in all required fields'); return; }
   if (!photoData) { showError('Please take a documentation photo'); return; }
-  var payload = {
-    type: 'yearbook_owner', authorizePerson: person, yearbookOwner: owner,
-    assistedBy: assisted, qrCode: qrValue || '', photoData: photoData,
-    timestamp: new Date().toISOString(),
-    userId: currentUser ? currentUser.userId : '', email: currentUser ? currentUser.email : ''
-  };
-  saveYearbookRecord(payload);
-  showSuccessModal('Owner Claim Submitted', 'Yearbook owner claim has been recorded successfully.');
-  document.getElementById('yb-owner-person').value = '';
-  document.getElementById('yb-owner-name').value = '';
-  document.getElementById('yb-owner-photo-data').value = '';
-  if (qrResult) { qrResult.textContent = ''; qrResult.style.display = 'none'; qrResult.removeAttribute('data-qr-value'); }
-  var photoPreview = document.getElementById('yb-owner-photo-preview');
-  if (photoPreview) { photoPreview.classList.remove('has-photo'); photoPreview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>'; }
+  showLoading();
+  compressPhoto(photoData, 1280, 0.8).then(function(compressed){
+    var localPayload = {
+      type: 'yearbook_owner', yearbookOwner: owner,
+      batch: batch, photoData: compressed,
+      timestamp: new Date().toISOString(),
+      userId: currentUser ? currentUser.userId : '', email: currentUser ? currentUser.email : ''
+    };
+    saveYearbookRecord(localPayload);
+    if (currentUser && navigator.onLine) {
+      var serverPayload = {
+        action: 'saveYearbook',
+        type: 'yearbook_owner',
+        authorizePerson: '',
+        yearbookOwner: owner,
+        batch: batch,
+        assistedBy: currentUser.firstName + ' ' + currentUser.lastName,
+        email: currentUser.email,
+        userId: currentUser.userId,
+        photoData: compressed
+      };
+      apiPost('saveYearbook', serverPayload, function(resp) {
+        hideLoading();
+        if (!resp.success) {
+          showError('Server save failed: ' + (resp.error || 'Unknown error'));
+          queueOfflineAction('saveYearbook', serverPayload);
+        } else {
+          if (resp.photoUrl) {
+            updateYearbookRecordPhoto(localPayload.timestamp, resp.photoUrl, resp.fileId);
+          } else if (compressed.length > 100) {
+            showError('Text saved, but photo upload failed. Run testDriveAccess() in Apps Script, then re-deploy.');
+            queueOfflineAction('saveYearbook', serverPayload);
+          }
+        }
+      });
+    } else {
+      hideLoading();
+      queueOfflineAction('saveYearbook', localPayload);
+      showError('Saved offline. Will sync when online.');
+    }
+    showSuccessModal('Owner Claim Submitted', 'Yearbook owner claim has been recorded successfully.');
+    document.getElementById('yb-owner-name').value = '';
+    document.getElementById('yb-owner-batch').value = '';
+    document.getElementById('yb-owner-photo-data').value = '';
+    var photoPreview = document.getElementById('yb-owner-photo-preview');
+    if (photoPreview) { photoPreview.classList.remove('has-photo'); photoPreview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>'; }
+  });
 }
 
 function saveYearbookRecord(payload) {
@@ -4073,7 +6532,38 @@ function saveYearbookRecord(payload) {
   } catch(e) {}
 }
 
-// Override openSubScreen to auto-fill assisted by fields
+// ===== OFFICE SURVEY QR =====
+var OFFICE_SURVEY_URL = 'https://surveymars.com/q/T4GbxhQUK';
+function getOfficeSurveyQRSrc(size){
+  size = size || '300x300';
+  var data = encodeURIComponent(OFFICE_SURVEY_URL);
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + '&margin=2&color=1a9b8a&bgcolor=ffffff&data=' + data;
+}
+function loadOfficeSurveyQRs(){
+  var src = getOfficeSurveyQRSrc();
+  ['yb-auth-qr-img','yb-owner-qr-img'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) { el.src = src; el.onerror = function(){ this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(OFFICE_SURVEY_URL) + '&size=300&dark=1a9b8a&light=ffffff'; }; }
+  });
+}
+
+function openQRModal(){
+  var modal = document.getElementById('qr-modal');
+  var img = document.getElementById('qr-modal-img');
+  var link = document.getElementById('qr-modal-link');
+  if(modal && img){
+    img.src = getOfficeSurveyQRSrc('600x600');
+    img.onerror = function(){ this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(OFFICE_SURVEY_URL) + '&size=600&dark=1a9b8a&light=ffffff'; };
+    if(link) { link.href = OFFICE_SURVEY_URL; link.textContent = OFFICE_SURVEY_URL; }
+    modal.classList.add('active');
+  }
+}
+function closeQRModal(){
+  var modal = document.getElementById('qr-modal');
+  if(modal) modal.classList.remove('active');
+}
+
+// Override openSubScreen to auto-fill assisted by + load QRs + render clients
 var originalOpenSubScreen = openSubScreen;
 openSubScreen = function(screenId) {
   var screen = document.getElementById(screenId);
@@ -4081,130 +6571,760 @@ openSubScreen = function(screenId) {
     screen.classList.add('active');
     if (screenId === 'yearbook-authorize-screen' || screenId === 'yearbook-owner-screen') {
       setTimeout(fillYearbookAssistedFields, 100);
+      setTimeout(loadOfficeSurveyQRs, 50);
+    }
+    if (screenId === 'yearbook-clients-screen') {
+      setTimeout(function(){ renderYearbookClients(); syncYearbookFromServer(function(){ renderYearbookClients(); }); }, 50);
     }
   }
 };
 
+// ===== YEARBOOK CLIENTS LIST =====
+var ybClientsFilter = 'all';
+function openYearbookClients(){ openSubScreen('yearbook-clients-screen'); syncYearbookFromServer(function(){ renderYearbookClients(); }); }
+function setYbFilter(btn, value){
+  ybClientsFilter = value;
+  document.querySelectorAll('#yearbook-clients-screen .yb-filter-chip').forEach(function(c){ c.classList.remove('active'); });
+  btn.classList.add('active');
+  renderYearbookClients();
+}
+function getYearbookRecords(){
+  try { return JSON.parse(localStorage.getItem('yearbookRecords') || '[]'); } catch(e){ return []; }
+}
+
+function compressPhoto(base64, maxWidth, quality){
+  return new Promise(function(resolve){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      var scale = Math.min(1, maxWidth / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = base64;
+  });
+}
+
+function updateYearbookRecordPhoto(timestamp, photoUrl, fileId){
+  try{
+    var records = getYearbookRecords();
+    for(var i=0;i<records.length;i++){
+      if(records[i].timestamp === timestamp){
+        records[i].photoUrl = photoUrl;
+        records[i].fileId = fileId;
+        break;
+      }
+    }
+    localStorage.setItem('yearbookRecords', JSON.stringify(records));
+  }catch(e){}
+}
+
+function syncYearbookFromServer(callback){
+  callback = callback || function(){};
+  if(!currentUser || !navigator.onLine) { callback(); return; }
+  apiCall('getYearbook', { email: currentUser.email }, function(resp){
+    if(resp.success && resp.records && resp.records.length > 0){
+      var local = getYearbookRecords();
+      var merged = [];
+      var localMap = {};
+      for(var i=0;i<local.length;i++){
+        var key = (local[i].timestamp||'') + '|' + (local[i].type||'') + '|' + (local[i].yearbookOwner||'');
+        localMap[key] = local[i];
+      }
+      for(var j=0;j<resp.records.length;j++){
+        var sr = resp.records[j];
+        var key = (sr.timestamp||'') + '|' + (sr.type||'') + '|' + (sr.yearbookOwner||'');
+        if(localMap[key]){
+          var mergedRec = JSON.parse(JSON.stringify(localMap[key]));
+          mergedRec.authorizePerson = sr.authorizePerson || mergedRec.authorizePerson;
+          mergedRec.yearbookOwner = sr.yearbookOwner || mergedRec.yearbookOwner;
+          mergedRec.batch = sr.batch || mergedRec.batch;
+          mergedRec.assistedBy = sr.assistedBy || mergedRec.assistedBy;
+          mergedRec.email = sr.email || mergedRec.email;
+          mergedRec.userId = sr.userId || mergedRec.userId;
+          // Prefer server photoUrl/fileId if available
+          if(sr.photoUrl) mergedRec.photoUrl = sr.photoUrl;
+          if(sr.fileId) mergedRec.fileId = sr.fileId;
+          merged.push(mergedRec);
+          delete localMap[key];
+        } else {
+          merged.push({
+            type: sr.type,
+            authorizePerson: sr.authorizePerson,
+            yearbookOwner: sr.yearbookOwner,
+            batch: sr.batch,
+            assistedBy: sr.assistedBy,
+            email: sr.email,
+            userId: sr.userId,
+            timestamp: sr.timestamp,
+            photoData: '',
+            photoUrl: sr.photoUrl || '',
+            fileId: sr.fileId || ''
+          });
+        }
+      }
+      for(var k in localMap){
+        if(localMap.hasOwnProperty(k)) merged.push(localMap[k]);
+      }
+      merged.sort(function(a,b){ return new Date(b.timestamp) - new Date(a.timestamp); });
+      try{ localStorage.setItem('yearbookRecords', JSON.stringify(merged)); }catch(e){}
+    }
+    callback();
+  }, true);
+}
+
+
+
+
+function syncPictureFramesFromServer(callback, year){
+  callback = callback || function(){};
+  year = year || '2025';
+  if(!currentUser || !navigator.onLine) { callback(); return; }
+  apiCall('getPictureFrames', { email: currentUser.email, year: year }, function(resp){
+    if(resp.success && resp.records){
+      var key = (year === '2026') ? 'pictureFrames2026Records' : 'pictureFramesRecords';
+      var local = JSON.parse(localStorage.getItem(key) || '[]');
+      var merged = [];
+      var localMap = {};
+      for(var i=0;i<local.length;i++){
+        var k = (local[i].timestamp||'') + '|' + (local[i].year||'2025');
+        localMap[k] = local[i];
+      }
+      for(var j=0;j<resp.records.length;j++){
+        var sr = resp.records[j];
+        var k = (sr.timestamp||'') + '|' + (sr.year||'2025');
+        if(localMap[k]){
+          var mergedRec = JSON.parse(JSON.stringify(localMap[k]));
+          mergedRec.balance = sr.balance;
+          mergedRec.amountPaid = sr.amountPaid;
+          mergedRec.status = sr.status;
+          mergedRec.surveyAnswered = sr.surveyAnswered;
+          if(sr.photoUrl) mergedRec.photoUrl = sr.photoUrl;
+          if(sr.fileId) mergedRec.fileId = sr.fileId;
+          merged.push(mergedRec);
+          delete localMap[k];
+        } else {
+          merged.push(sr);
+        }
+      }
+      for(var k in localMap){
+        if(localMap.hasOwnProperty(k)) merged.push(localMap[k]);
+      }
+      merged.sort(function(a,b){ return new Date(b.timestamp) - new Date(a.timestamp); });
+      localStorage.setItem(key, JSON.stringify(merged));
+    }
+    callback();
+  }, true);
+}
+
+function fmtClientDate(iso){
+  try {
+    var d = new Date(iso);
+    return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) + ' · ' +
+           d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  } catch(e){ return iso || ''; }
+}
+function renderYearbookClients(){
+  var list = document.getElementById('yb-clients-list');
+  if (!list) return;
+  var q = (document.getElementById('yb-clients-search').value || '').toLowerCase().trim();
+  var allRecords = getYearbookRecords().slice().reverse();
+  var records = allRecords;
+
+  // Update stats
+  var total = allRecords.length;
+  var authCount = allRecords.filter(function(r){ return r.type === 'yearbook_authorize'; }).length;
+  var ownerCount = allRecords.filter(function(r){ return r.type === 'yearbook_owner'; }).length;
+
+  var statTotal = document.getElementById('yb-stat-total');
+  var statAuth = document.getElementById('yb-stat-auth');
+  var statOwner = document.getElementById('yb-stat-owner');
+  var countLabel = document.getElementById('yb-clients-count');
+
+  if (statTotal) statTotal.textContent = total;
+  if (statAuth) statAuth.textContent = authCount;
+  if (statOwner) statOwner.textContent = ownerCount;
+
+  // Apply filters
+  if (ybClientsFilter !== 'all') records = records.filter(function(r){ return r.type === ybClientsFilter; });
+  if (q) records = records.filter(function(r){
+    return (r.yearbookOwner||'').toLowerCase().indexOf(q) > -1 ||
+           (r.authorizePerson||'').toLowerCase().indexOf(q) > -1 ||
+           (r.batch||'').toLowerCase().indexOf(q) > -1;
+  });
+
+  if (countLabel) countLabel.textContent = records.length + ' client' + (records.length !== 1 ? 's' : '');
+
+  if (!records.length){
+    list.innerHTML = '<div class="yb-empty">' +
+      '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>' +
+      '<div style="font-weight:600;color:var(--text-dark);">No clients found</div>' +
+      '<div style="font-size:12px;margin-top:4px;">Try a different search or filter.</div>' +
+      '</div>';
+    return;
+  }
+
+  list.innerHTML = records.map(function(r, i){
+    var name = r.yearbookOwner || r.authorizePerson || 'Unknown';
+    var initial = (name.trim().charAt(0) || '?').toUpperCase();
+    var tagClass = r.type === 'yearbook_owner' ? 'owner' : 'authorize';
+    var tagLabel = r.type === 'yearbook_owner' ? 'Owner' : 'Authorize';
+    var batchLabel = r.batch ? '<span style="background:var(--bg);color:var(--text-medium);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;">Batch ' + escapeHtml(r.batch) + '</span>' : '';
+    var photoSrc = r.photoUrl || r.photoData || '';
+    var thumb = photoSrc ?
+    `<div class="yb-client-thumb"><img src="${photoSrc}" alt="" onerror="this.parentElement.textContent='${initial}';this.remove()"></div>` :
+    `<div class="yb-client-thumb">${initial}</div>`;
+    return '<div class="yb-client-card" onclick="openYearbookDetail('+ (records.length - 1 - i) +')">' +
+      thumb +
+      '<div class="yb-client-info">' +
+        '<div class="yb-client-name">'+escapeHtml(name)+'</div>' +
+        '<div class="yb-client-meta"><span class="yb-tag '+tagClass+'">'+tagLabel+'</span>' + batchLabel + '<span>'+fmtClientDate(r.timestamp)+'</span></div>' +
+      '</div>' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>' +
+    '</div>';
+  }).join('');
+}
+function openYearbookDetail(index){
+  var records = getYearbookRecords();
+  var r = records[index];
+  if (!r) return;
+  var body = document.getElementById('yb-detail-body');
+  var tagClass = r.type === 'yearbook_owner' ? 'owner' : 'authorize';
+  var tagLabel = r.type === 'yearbook_owner' ? 'Owner Claim' : 'Authorization';
+  var photoSrc = r.photoUrl || r.photoData || '';
+var photoHtml = photoSrc ? `<img class="yb-detail-photo" src="${photoSrc}" alt="Documentation" onerror="this.style.display='none'">` : '';
+  body.innerHTML =
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">' +
+      '<span class="yb-tag '+tagClass+'" style="font-size:11px;padding:4px 10px;">'+tagLabel+'</span>' +
+      '<span style="font-size:11px;color:var(--text-medium);">'+fmtClientDate(r.timestamp)+'</span>' +
+    '</div>' +
+    photoHtml +
+    '<div class="yb-detail-row"><span class="k">Yearbook Owner</span><span class="v">'+escapeHtml(r.yearbookOwner||'-')+'</span></div>' +
+    (r.authorizePerson ? '<div class="yb-detail-row"><span class="k">Authorize Person</span><span class="v">'+escapeHtml(r.authorizePerson)+'</span></div>' : '') +
+    (r.batch ? '<div class="yb-detail-row"><span class="k">Batch</span><span class="v">'+escapeHtml(r.batch)+'</span></div>' : '') +
+    (r.assistedBy ? '<div class="yb-detail-row"><span class="k">Assisted By</span><span class="v">'+escapeHtml(r.assistedBy)+'</span></div>' : '') +
+    (r.email ? '<div class="yb-detail-row"><span class="k">Email</span><span class="v">'+escapeHtml(r.email)+'</span></div>' : '');
+  document.getElementById('yb-detail-overlay').classList.add('active');
+}
+function closeYearbookDetail(){
+  document.getElementById('yb-detail-overlay').classList.remove('active');
+}
+
+
+
+/* ===== PICTURE FRAMES 2025 ===== */
+var PF_SURVEY_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfmrFOiBJHXq_rc2qcr5r95s6ojSHzgd1jQw__sRPCVmLRrvw/viewform?usp=header';
+var PF_GCASH_PATH = 'gcash-qr.png';
+
+function getPFSurveyQRSrc(size){
+  size = size || '300x300';
+  var data = encodeURIComponent(PF_SURVEY_URL);
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + '&margin=2&color=3498db&bgcolor=ffffff&data=' + data;
+}
+
+function loadPFSurveyQR(){
+  var el = document.getElementById('pf-survey-qr-img');
+  if(el){
+    el.src = getPFSurveyQRSrc();
+    el.onerror = function(){
+      this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(PF_SURVEY_URL) + '&size=300&dark=3498db&light=ffffff';
+    };
+  }
+}
+
+function openPFQRModal(type){
+  var modal = document.getElementById('qr-modal');
+  if(!modal) return;
+  var img = document.getElementById('qr-modal-img');
+  var link = document.getElementById('qr-modal-link');
+  var title = document.getElementById('qr-modal-title');
+  
+  if(type === 'survey2026'){
+    if(img){
+      img.src = getPF2026SurveyQRSrc('600x600');
+      img.onerror = function(){
+        this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(PF_2026_SURVEY_URL) + '&size=600&dark=3498db&light=ffffff';
+      };
+    }
+    if(link){ link.href = PF_2026_SURVEY_URL; link.textContent = 'Open 2026 Google Form'; }
+    if(title) title.textContent = '2026 Office Survey QR';
+  } else if(type === 'survey'){
+    if(img){
+      img.src = getPFSurveyQRSrc('600x600');
+      img.onerror = function(){
+        this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(PF_SURVEY_URL) + '&size=600&dark=3498db&light=ffffff';
+      };
+    }
+    if(link){ link.href = PF_SURVEY_URL; link.textContent = 'Open Google Form'; }
+    if(title) title.textContent = 'Office Survey QR';
+  } else if(type === 'gcash'){
+    if(img){
+      img.src = PF_GCASH_PATH;
+      img.onerror = function(){
+        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2Y1ZjdmYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzcxODA5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R0Nhc2ggUVI8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjYTBhZWMwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BZGQgZ2Nhc2gtcXIucG5nIHRvIGxvY2FsIGZvbGRlcjwvdGV4dD48L3N2Zz4=';
+      };
+    }
+    if(link){ link.href = '#'; link.textContent = 'GCash QR Code'; }
+    if(title) title.textContent = 'GCash QR Code';
+  }
+  modal.classList.add('active');
+}
+
+// Override existing openQRModal so it resets the title back for Yearbook
+var _originalOpenQRModal = openQRModal;
+openQRModal = function(){
+  var title = document.getElementById('qr-modal-title');
+  if(title) title.textContent = 'Office Survey QR';
+  _originalOpenQRModal();
+};
+
+function fillPictureFramesAssisted(){
+  if(!currentUser) return;
+  var fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '');
+  var el = document.getElementById('pf-assisted-by');
+  if(el) el.value = fullName.trim();
+}
+
+function calculatePFBalance(){
+  var balanceEl = document.getElementById('pf-balance');
+  var paidEl = document.getElementById('pf-amount-paid');
+  var statusEl = document.getElementById('pf-payment-status');
+  if(!balanceEl || !paidEl || !statusEl) return;
+  var balance = parseFloat(balanceEl.value) || 0;
+  var paid = parseFloat(paidEl.value) || 0;
+  if(balance > 0 || paid > 0){
+    var remaining = balance - paid;
+    statusEl.style.display = 'block';
+    if(remaining <= 0){
+      statusEl.textContent = '✓ Fully Paid (Change: ₱' + Math.abs(remaining).toFixed(2) + ')';
+      statusEl.style.background = 'rgba(39,174,96,0.1)';
+      statusEl.style.color = 'var(--success)';
+    } else {
+      statusEl.textContent = 'Remaining Balance: ₱' + remaining.toFixed(2);
+      statusEl.style.background = 'rgba(243,156,18,0.1)';
+      statusEl.style.color = 'var(--warning)';
+    }
+  } else {
+    statusEl.style.display = 'none';
+  }
+}
+
+function updatePFStats(){
+  var records = JSON.parse(localStorage.getItem('pictureFramesRecords') || '[]');
+  var totalClaims = records.length;
+  var totalCollected = 0, totalPending = 0;
+  for(var i=0;i<records.length;i++){
+    var r = records[i];
+    var paid = r.amountPaid || 0;
+    var balance = r.balance || 0;
+    totalCollected += paid;
+    if(balance > paid) totalPending += (balance - paid);
+  }
+  var el;
+  el = document.getElementById('pf-stat-total'); if(el) el.textContent = totalClaims;
+  el = document.getElementById('pf-stat-paid'); if(el) el.textContent = '₱' + totalCollected.toFixed(0);
+  el = document.getElementById('pf-stat-pending'); if(el) el.textContent = '₱' + totalPending.toFixed(0);
+}
+
+function renderPFRecentClaims(){
+  var container = document.getElementById('pf-recent-claims');
+  if(!container) return;
+  var records = JSON.parse(localStorage.getItem('pictureFramesRecords') || '[]').slice().reverse();
+  var recent = records.slice(0, 3);
+  if(recent.length === 0){
+    container.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-light);font-size:12px;">No claims yet. Submit your first record above.</div>';
+    updatePFStats();
+    return;
+  }
+  var html = '';
+  for(var i=0;i<recent.length;i++){
+    var r = recent[i];
+    var remaining = (r.balance || 0) - (r.amountPaid || 0);
+    var status = remaining <= 0 ? 'Paid' : 'Partial';
+    var statusColor = remaining <= 0 ? 'var(--success)' : 'var(--warning)';
+    var bgColor = remaining <= 0 ? 'rgba(39,174,96,0.1)' : 'rgba(243,156,18,0.1)';
+    var dateStr = r.timestamp ? new Date(r.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric'}) : 'Just now';
+    html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:14px;">' +
+      '<div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#f39c12,#e67e22);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0;">PF</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text-dark);">₱' + (r.amountPaid || 0).toFixed(2) + ' / ₱' + (r.balance || 0).toFixed(2) + '</div>' +
+        '<div style="font-size:11px;color:var(--text-medium);margin-top:2px;">' + dateStr + ' • ' + (r.surveyAnswered ? 'Survey ✓' : 'Survey ✗') + ' • ' + escapeHtml(r.assistedBy || '-') + '</div>' +
+      '</div>' +
+      '<span style="font-size:11px;font-weight:700;color:' + statusColor + ';background:' + bgColor + ';padding:4px 10px;border-radius:20px;flex-shrink:0;">' + status + '</span>' +
+    '</div>';
+  }
+  container.innerHTML = html;
+  updatePFStats();
+}
+
+function submitPictureFrames(){
+  var balance = document.getElementById('pf-balance').value.trim();
+  var amountPaid = document.getElementById('pf-amount-paid').value.trim();
+  var surveyAnswered = document.getElementById('pf-survey-answered').checked;
+  var photoData = document.getElementById('yb-picture-frames-photo-data').value;
+  var assistedBy = document.getElementById('pf-assisted-by').value.trim();
+  if(!balance || !amountPaid){ showError('Please enter balance and amount paid'); return; }
+  if(!photoData){ showError('Please take a documentation photo'); return; }
+  showLoading();
+  compressPhoto(photoData, 1280, 0.8).then(function(compressed){
+    var localPayload = {
+      type: 'picture_frames',
+      year: '2025',
+      balance: parseFloat(balance),
+      amountPaid: parseFloat(amountPaid),
+      surveyAnswered: surveyAnswered,
+      photoData: compressed,
+      assistedBy: assistedBy,
+      timestamp: new Date().toISOString(),
+      userId: currentUser ? currentUser.userId : '',
+      email: currentUser ? currentUser.email : ''
+    };
+    var records = JSON.parse(localStorage.getItem('pictureFramesRecords') || '[]');
+    records.push(localPayload);
+    localStorage.setItem('pictureFramesRecords', JSON.stringify(records));
+    
+    if(currentUser && navigator.onLine){
+      var serverPayload = Object.assign({}, localPayload);
+      apiPost('savePictureFrames', serverPayload, function(resp){
+        hideLoading();
+        if(!resp.success){
+          showError('Server save failed: ' + (resp.error || 'Unknown error'));
+          queueOfflineAction('savePictureFrames', serverPayload);
+        } else {
+          if(resp.photoUrl){
+            updatePictureFramesRecordPhoto(localPayload.timestamp, resp.photoUrl, resp.fileId, '2025');
+          } else if(compressed.length > 100) {
+            showError('Text saved, but photo upload failed. Run testDriveAccess() in Apps Script, then re-deploy.');
+            queueOfflineAction('savePictureFrames', serverPayload);
+          }
+        }
+      });
+    } else {
+      hideLoading();
+      if(!navigator.onLine){
+        queueOfflineAction('savePictureFrames', localPayload);
+        showError('Saved offline. Will sync when online.');
+      }
+    }
+    
+    showSuccessModal('Picture Frames Claimed', 'Record saved successfully for 2025.');
+    document.getElementById('pf-balance').value = '';
+    document.getElementById('pf-amount-paid').value = '';
+    document.getElementById('pf-survey-answered').checked = false;
+    document.getElementById('yb-picture-frames-photo-data').value = '';
+    var preview = document.getElementById('yb-picture-frames-photo-preview');
+    if(preview){
+      preview.classList.remove('has-photo');
+      preview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>';
+    }
+    document.getElementById('pf-payment-status').style.display = 'none';
+    renderPFRecentClaims();
+  });
+}
+
+/* ===== PICTURE FRAMES 2026 ===== */
+var PF_2026_SURVEY_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdbGeHUpO4e__UNPBAO2z9L6gmnSHueM-X3KC8luQsGqK05-A/viewform?usp=header';
+var currentPFYear = 2025;
+
+function switchPFYear(year){
+  currentPFYear = year;
+  var btn25 = document.getElementById('pf-btn-2025');
+  var btn26 = document.getElementById('pf-btn-2026');
+  var c25 = document.getElementById('pf-container-2025');
+  var c26 = document.getElementById('pf-container-2026');
+  if(btn25) btn25.classList.toggle('active', year === 2025);
+  if(btn26) btn26.classList.toggle('active', year === 2026);
+  if(c25) c25.style.display = year === 2025 ? 'block' : 'none';
+  if(c26) c26.style.display = year === 2026 ? 'block' : 'none';
+  
+  if(year === 2026){
+    fillPF2026AssistedBy();
+    loadPF2026SurveyQR();
+    syncPictureFramesFromServer(function(){ renderPF2026RecentClaims(); }, '2026');
+    calculatePF2026Balance();
+  } else {
+    fillPictureFramesAssisted();
+    loadPFSurveyQR();
+    syncPictureFramesFromServer(function(){ renderPFRecentClaims(); }, '2025');
+    calculatePFBalance();
+  }
+}
+
+function getPF2026SurveyQRSrc(size){
+  size = size || '300x300';
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + '&margin=2&color=3498db&bgcolor=ffffff&data=' + encodeURIComponent(PF_2026_SURVEY_URL);
+}
+
+function loadPF2026SurveyQR(){
+  var el = document.getElementById('pf-2026-survey-qr-img');
+  if(el){
+    el.src = getPF2026SurveyQRSrc();
+    el.onerror = function(){
+      this.src = 'https://quickchart.io/qr?text=' + encodeURIComponent(PF_2026_SURVEY_URL) + '&size=300&dark=3498db&light=ffffff';
+    };
+  }
+}
+
+function fillPF2026AssistedBy(){
+  if(!currentUser) return;
+  var fullName = ((currentUser.firstName || '') + ' ' + (currentUser.lastName || '')).trim();
+  var role = (currentUser.employeeType || 'Staff') + (currentUser.course ? ' · ' + currentUser.course : '');
+  var email = currentUser.email || '';
+  var avatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(fullName || 'User') + '&background=1a9b8a&color=fff&size=100';
+  
+  var img = document.getElementById('pf-2026-avatar');
+  var nameEl = document.getElementById('pf-2026-name');
+  var roleEl = document.getElementById('pf-2026-role');
+  var emailEl = document.getElementById('pf-2026-email');
+  
+  if(img) img.src = avatar;
+  if(nameEl) nameEl.textContent = fullName || 'Staff';
+  if(roleEl) roleEl.textContent = role;
+  if(emailEl) emailEl.textContent = email;
+}
+
+function calculatePF2026Balance(){
+  var balanceEl = document.getElementById('pf-2026-balance');
+  var paidEl = document.getElementById('pf-2026-amount-paid');
+  var statusEl = document.getElementById('pf-2026-status');
+  var statusDisplay = document.getElementById('pf-2026-payment-status');
+  if(!balanceEl || !paidEl || !statusDisplay) return;
+  
+  var balance = parseFloat(balanceEl.value) || 0;
+  var paid = parseFloat(paidEl.value) || 0;
+  var status = statusEl ? statusEl.value : 'Fully Paid';
+  
+  if(balance > 0 || paid > 0){
+    var remaining = balance - paid;
+    statusDisplay.style.display = 'block';
+    if(status === 'Fully Paid' || (status !== 'Cancelled' && status !== 'Refunded' && remaining <= 0)){
+      statusDisplay.textContent = '✓ Fully Paid' + (remaining < 0 ? ' (Change: ₱' + Math.abs(remaining).toFixed(2) + ')' : '');
+      statusDisplay.style.background = 'rgba(39,174,96,0.1)';
+      statusDisplay.style.color = 'var(--success)';
+    } else if(status === 'Partially Paid'){
+      statusDisplay.textContent = 'Partial: Remaining ₱' + remaining.toFixed(2);
+      statusDisplay.style.background = 'rgba(243,156,18,0.1)';
+      statusDisplay.style.color = 'var(--warning)';
+    } else if(status === 'Pending'){
+      statusDisplay.textContent = 'Pending: ₱' + balance.toFixed(2) + ' due';
+      statusDisplay.style.background = 'rgba(160,174,192,0.15)';
+      statusDisplay.style.color = 'var(--text-medium)';
+    } else if(status === 'Cancelled'){
+      statusDisplay.textContent = 'Order Cancelled';
+      statusDisplay.style.background = 'rgba(231,76,107,0.1)';
+      statusDisplay.style.color = 'var(--danger)';
+    } else if(status === 'Refunded'){
+      statusDisplay.textContent = 'Refunded';
+      statusDisplay.style.background = 'rgba(123,140,222,0.15)';
+      statusDisplay.style.color = 'var(--secondary)';
+    }
+  } else {
+    statusDisplay.style.display = 'none';
+  }
+}
+
+function updatePF2026Stats(){
+  var records = JSON.parse(localStorage.getItem('pictureFrames2026Records') || '[]');
+  var totalClaims = records.length;
+  var totalCollected = 0, totalPending = 0;
+  for(var i=0;i<records.length;i++){
+    var r = records[i];
+    if(r.status === 'Fully Paid' || r.status === 'Partially Paid') totalCollected += (r.amountPaid || 0);
+    if(r.status === 'Pending' || r.status === 'Partially Paid') totalPending += Math.max(0, (r.balance || 0) - (r.amountPaid || 0));
+  }
+  var el;
+  el = document.getElementById('pf-2026-stat-total'); if(el) el.textContent = totalClaims;
+  el = document.getElementById('pf-2026-stat-paid'); if(el) el.textContent = '₱' + totalCollected.toFixed(0);
+  el = document.getElementById('pf-2026-stat-pending'); if(el) el.textContent = '₱' + totalPending.toFixed(0);
+}
+
+function renderPF2026RecentClaims(){
+  var container = document.getElementById('pf-2026-recent-claims');
+  if(!container) return;
+  var records = JSON.parse(localStorage.getItem('pictureFrames2026Records') || '[]').slice().reverse();
+  var recent = records.slice(0, 3);
+  if(recent.length === 0){
+    container.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-light);font-size:12px;">No 2026 claims yet. Submit your first record above.</div>';
+    updatePF2026Stats();
+    return;
+  }
+  var statusColors = {
+    'Fully Paid': 'var(--success)',
+    'Partially Paid': 'var(--warning)',
+    'Pending': 'var(--text-medium)',
+    'Cancelled': 'var(--danger)',
+    'Refunded': 'var(--secondary)'
+  };
+  var statusBgs = {
+    'Fully Paid': 'rgba(39,174,96,0.1)',
+    'Partially Paid': 'rgba(243,156,18,0.1)',
+    'Pending': 'rgba(160,174,192,0.15)',
+    'Cancelled': 'rgba(231,76,107,0.1)',
+    'Refunded': 'rgba(123,140,222,0.15)'
+  };
+  var html = '';
+  for(var i=0;i<recent.length;i++){
+    var r = recent[i];
+    var sc = statusColors[r.status] || 'var(--text-medium)';
+    var sb = statusBgs[r.status] || 'rgba(160,174,192,0.15)';
+    var dateStr = r.timestamp ? new Date(r.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric'}) : 'Just now';
+    html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:14px;">' +
+      '<div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#f39c12,#e67e22);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0;">PF</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text-dark);">₱' + (r.amountPaid || 0).toFixed(2) + ' / ₱' + (r.balance || 0).toFixed(2) + '</div>' +
+        '<div style="font-size:11px;color:var(--text-medium);margin-top:2px;">' + dateStr + ' • ' + (r.surveyAnswered ? 'Survey ✓' : 'Survey ✗') + ' • ' + escapeHtml(r.assistedBy || '-') + '</div>' +
+      '</div>' +
+      '<span style="font-size:10px;font-weight:700;color:' + sc + ';background:' + sb + ';padding:4px 10px;border-radius:20px;flex-shrink:0;text-transform:uppercase;">' + (r.status || 'Pending') + '</span>' +
+    '</div>';
+  }
+  container.innerHTML = html;
+  updatePF2026Stats();
+}
+
+function submitPictureFrames2026(){
+  var balance = document.getElementById('pf-2026-balance').value.trim();
+  var amountPaid = document.getElementById('pf-2026-amount-paid').value.trim();
+  var status = document.getElementById('pf-2026-status').value;
+  var surveyAnswered = document.getElementById('pf-2026-survey-answered').checked;
+  var photoData = document.getElementById('yb-pf-2026-photo-data').value;
+  var assistedBy = currentUser ? ((currentUser.firstName || '') + ' ' + (currentUser.lastName || '')).trim() : '';
+  
+  if(!balance || !amountPaid){ showError('Please enter balance and amount paid'); return; }
+  if(!photoData){ showError('Please take a documentation photo'); return; }
+  
+  showLoading();
+  compressPhoto(photoData, 1280, 0.8).then(function(compressed){
+    var localPayload = {
+      type: 'picture_frames_2026',
+      year: '2026',
+      balance: parseFloat(balance),
+      amountPaid: parseFloat(amountPaid),
+      status: status,
+      surveyAnswered: surveyAnswered,
+      photoData: compressed,
+      assistedBy: assistedBy,
+      timestamp: new Date().toISOString(),
+      userId: currentUser ? currentUser.userId : '',
+      email: currentUser ? currentUser.email : ''
+    };
+    
+    var records = JSON.parse(localStorage.getItem('pictureFrames2026Records') || '[]');
+    records.push(localPayload);
+    localStorage.setItem('pictureFrames2026Records', JSON.stringify(records));
+    
+    if(currentUser && navigator.onLine){
+      var serverPayload = Object.assign({}, localPayload);
+      apiPost('savePictureFrames', serverPayload, function(resp){
+        hideLoading();
+        if(!resp.success){
+          showError('Server save failed: ' + (resp.error || 'Unknown error'));
+          queueOfflineAction('savePictureFrames', serverPayload);
+        } else {
+          if(resp.photoUrl){
+            updatePictureFramesRecordPhoto(localPayload.timestamp, resp.photoUrl, resp.fileId, '2026');
+          } else if(compressed.length > 100) {
+            showError('Text saved, but photo upload failed. Run testDriveAccess() in Apps Script, then re-deploy.');
+            queueOfflineAction('savePictureFrames', serverPayload);
+          }
+        }
+      });
+    } else {
+      hideLoading();
+      if(!navigator.onLine){
+        queueOfflineAction('savePictureFrames', localPayload);
+        showError('Saved offline. Will sync when online.');
+      }
+    }
+    
+    showSuccessModal('2026 Claim Submitted', 'Picture Frames 2026 record saved successfully.');
+    document.getElementById('pf-2026-balance').value = '';
+    document.getElementById('pf-2026-amount-paid').value = '';
+    document.getElementById('pf-2026-status').value = 'Fully Paid';
+    document.getElementById('pf-2026-survey-answered').checked = false;
+    document.getElementById('yb-pf-2026-photo-data').value = '';
+    var preview = document.getElementById('yb-pf-2026-photo-preview');
+    if(preview){
+      preview.classList.remove('has-photo');
+      preview.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Tap to open camera</span>';
+    }
+    document.getElementById('pf-2026-payment-status').style.display = 'none';
+    renderPF2026RecentClaims();
+  });
+}
+
 </script>
 
 
-<div id="yearbook-authorize-screen" class="sub-screen">
-  <div class="sub-header">
-    <button class="back-btn" onclick="closeSubScreen('yearbook-authorize-screen')" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>
-    <h2>Yearbook - Authorize</h2>
-  </div>
-  <div class="sub-content">
-     <div class="yearbook-form">
-    <div class="form-section" style="gap:16px;">
 
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Authorize Person Name *</label>
-        <input type="text" id="yb-auth-person" class="form-input" placeholder="Enter authorize person name">
-      </div>
 
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Yearbook Owner Name *</label>
-        <input type="text" id="yb-auth-owner" class="form-input" placeholder="Enter yearbook owner name">
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Graduate Employability Checker</label>
-        <a href="https://nton4976-wq.github.io/ubiquitous-couscous/" target="_blank" class="btn btn-secondary" style="text-decoration:none;width:100%;text-align:center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Open Graduate Employability Checker
-        </a>
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
-        <div id="yb-auth-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('auth')">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span>Tap to open camera</span>
-        </div>
-        <input type="hidden" id="yb-auth-photo-data" value="">
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Office Survey QR Code</label>
-        <button class="btn btn-secondary" onclick="openYearbookQRScanner('authorize')" style="width:100%;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7z"/><path d="M13 7h4v4h-4z"/><path d="M7 13h10v4H7z"/></svg>
-          Scan Office Survey QR
-        </button>
-        <div id="yb-auth-qr-result" style="margin-top:8px;padding:10px 14px;background:var(--bg);border-radius:12px;font-size:13px;color:var(--text-dark);display:none;"></div>
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Assisted By</label>
-        <input type="text" id="yb-auth-assisted" class="form-input" placeholder="Auto-filled from user profile" readonly style="background:var(--bg);color:var(--text-medium);">
-      </div>
-
-      <button class="btn btn-primary" style="margin-top:10px;" onclick="submitYearbookAuthorize()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
-        Submit Authorization
-      </button>
-
+<div id="success-modal" class="success-modal">
+  <div class="success-card">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
     </div>
-  </div>
+    <h3 id="success-title">Success!</h3>
+    <p id="success-message">Operation completed successfully.</p>
+    <button class="success-btn" onclick="closeSuccessModal()">OK</button>
   </div>
 </div>
 
-<div id="yearbook-owner-screen" class="sub-screen">
-  <div class="sub-header">
-    <button class="back-btn" onclick="closeSubScreen('yearbook-owner-screen')" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>
-    <h2>Yearbook - Owner</h2>
-  </div>
-  <div class="sub-content">
-    <div class="form-section" style="gap:16px;">
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Authorize Person Name *</label>
-        <input type="text" id="yb-owner-person" class="form-input" placeholder="Enter authorize person name">
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Yearbook Owner Name *</label>
-        <input type="text" id="yb-owner-name" class="form-input" placeholder="Enter yearbook owner name">
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Graduate Employability Checker</label>
-        <a href="https://nton4976-wq.github.io/ubiquitous-couscous/" target="_blank" class="btn btn-secondary" style="text-decoration:none;width:100%;text-align:center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Open Graduate Employability Checker
-        </a>
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Documentation Photo *</label>
-        <div id="yb-owner-photo-preview" class="yb-photo-box" onclick="handleYearbookPhotoBoxClick('owner')">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span>Tap to open camera</span>
-        </div>
-        <input type="hidden" id="yb-owner-photo-data" value="">
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Office Survey QR Code</label>
-        <button class="btn btn-secondary" onclick="openYearbookQRScanner('owner')" style="width:100%;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7z"/><path d="M13 7h4v4h-4z"/><path d="M7 13h10v4H7z"/></svg>
-          Scan Office Survey QR
-        </button>
-        <div id="yb-owner-qr-result" style="margin-top:8px;padding:10px 14px;background:var(--bg);border-radius:12px;font-size:13px;color:var(--text-dark);display:none;"></div>
-      </div>
-
-      <div class="input-group">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-medium);margin-bottom:6px;">Assisted By</label>
-        <input type="text" id="yb-owner-assisted" class="form-input" placeholder="Auto-filled from user profile" readonly style="background:var(--bg);color:var(--text-medium);">
-      </div>
-
-      <button class="btn btn-primary" style="margin-top:10px;" onclick="submitYearbookOwner()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
-        Submit Owner Claim
-      </button>
-
+<div id="activity-modal">
+  <div class="act-modal-card">
+    <div class="act-modal-title">Add Office Task</div>
+    <div id="act-cat-pick">
+      <div class="act-cat-opt active" data-cat="work" onclick="selectActCat(this)">Work</div>
+      <div class="act-cat-opt" data-cat="meeting" onclick="selectActCat(this)">Meeting</div>
+      <div class="act-cat-opt" data-cat="personal" onclick="selectActCat(this)">Personal</div>
+      <div class="act-cat-opt" data-cat="other" onclick="selectActCat(this)">Other</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="act-input-title" class="form-input" placeholder="What did you accomplish?">
+    </div>
+    <div class="input-group">
+      <textarea id="act-input-desc" class="form-input" placeholder="Add details..." style="min-height:90px;resize:none;border-radius:16px;"></textarea>
+    </div>
+    <div class="input-group">
+      <input type="date" id="act-input-date" class="form-input">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeActivityModal()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveActivity()">Save</button>
     </div>
   </div>
 </div>
+
+<!-- ===== YEARBOOK CLIENTS SCREEN ===== -->
+<div id="yearbook-clients-screen" class="sub-screen">
+  <div class="sub-header">
+    <button class="back-btn" onclick="closeSubScreen('yearbook-clients-screen')" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>
+    <h2>Yearbook Clients</h2>
+  </div>
+  <div class="sub-content">
+    <div class="yb-clients-toolbar">
+      <input type="text" id="yb-clients-search" class="yb-clients-search" placeholder="Search by name…" oninput="renderYearbookClients()">
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+      <button class="yb-filter-chip active" data-filter="all" onclick="setYbFilter(this,'all')">All</button>
+      <button class="yb-filter-chip" data-filter="yearbook_authorize" onclick="setYbFilter(this,'yearbook_authorize')">Authorize</button>
+      <button class="yb-filter-chip" data-filter="yearbook_owner" onclick="setYbFilter(this,'yearbook_owner')">Owner</button>
+    </div>
+    <div id="yb-clients-list" class="yb-clients-list"></div>
+  </div>
+</div>
+
+<!-- ===== YEARBOOK CLIENT DETAIL SHEET ===== -->
+<div id="yb-detail-overlay" class="yb-detail-overlay" onclick="if(event.target===this)closeYearbookDetail()">
+  <div class="yb-detail-sheet">
+    <div class="yb-detail-handle"></div>
+    <div id="yb-detail-body"></div>
+    <button class="btn btn-secondary" style="margin-top:14px;width:100%;" onclick="closeYearbookDetail()">Close</button>
+  </div>
+</div>
+
+
 
 
 <!-- ===== YEARBOOK CAMERA OVERLAY ===== -->
@@ -4233,6 +7353,24 @@ openSubScreen = function(screenId) {
     <button class="yb-capture-btn" onclick="captureYearbookPhoto()" aria-label="Take photo">
       <div class="yb-capture-ring"></div>
     </button>
+  </div>
+</div>
+
+<!-- QR Modal -->
+<div id="qr-modal" class="yb-detail-overlay" onclick="if(event.target===this)closeQRModal()" style="z-index:1600;">
+  <div class="yb-detail-sheet" style="max-height:70vh; padding-top:24px; text-align:center;">
+    <div class="yb-detail-handle"></div>
+<h3 id="qr-modal-title" style="font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:14px;">Office Survey QR</h3>
+    <div style="display:flex;justify-content:center;margin-bottom:16px;">
+      <div class="yb-qr-frame" style="width:260px;height:260px;">
+        <span class="yb-qr-corner tl"></span><span class="yb-qr-corner tr"></span>
+        <span class="yb-qr-corner bl"></span><span class="yb-qr-corner br"></span>
+        <img id="qr-modal-img" src="" alt="Office Survey QR" style="width:100%;height:100%;display:block;border-radius:8px;">
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-medium);margin-bottom:8px;">Scan this QR code with your phone to open the survey.</p>
+    <a id="qr-modal-link" href="" target="_blank" style="font-size:13px;color:var(--primary);font-weight:600;text-decoration:none;display:block;margin-bottom:16px;">Open Survey Link</a>
+    <button class="btn btn-secondary" style="width:100%;" onclick="closeQRModal()">Close</button>
   </div>
 </div>
 
