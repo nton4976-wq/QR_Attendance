@@ -3495,244 +3495,105 @@ textarea.form-input::placeholder,
   color: var(--text-light);
   opacity: 0.7;
 }
-/* ===== YEARBOOK & PICTURE FRAMES RESPONSIVE CARD FIXES ===== */
+/* ========================================================
+   YEARBOOK AUTHORIZE / OWNER — RESPONSIVE & EQUAL MARGINS FIX
+   ======================================================== */
 
-/* Prevent inline yearbook screens from overflowing their tab container */
-#yearbook-authorize-screen,
-#yearbook-owner-screen,
-#tab-yearbook,
-#tab-picture-frames {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  box-sizing: border-box;
-}
-
-/* Fix the sub-header background so it adapts to dark mode and never overflows */
-#yearbook-authorize-screen .sub-header,
-#yearbook-owner-screen .sub-header,
-#yearbook-clients-screen .sub-header {
-  width: 100%;
-  max-width: 100%;
-  background: var(--white);
-  color: var(--text-dark);
-  box-sizing: border-box;
-  flex-wrap: nowrap;
-  gap: 8px;
-}
-#yearbook-authorize-screen .sub-header h2,
-#yearbook-owner-screen .sub-header h2,
-#yearbook-clients-screen .sub-header h2 {
-  font-size: clamp(14px, 4vw, 16px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-/* Constrain sub-content so cards sit flush without side-scroll */
+/* 1. Restore equal horizontal padding so cards never touch the edges */
 #yearbook-authorize-screen .sub-content,
-#yearbook-owner-screen .sub-content,
-#yearbook-clients-screen .sub-content {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding-left: var(--pad-x);
-  padding-right: var(--pad-x);
+#yearbook-owner-screen .sub-content {
+  display: block !important;
+  padding: 16px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Force yearbook forms to stay within the tab width */
+/* 2. Form wrapper: full-width, responsive, centered */
 #yearbook-authorize-screen .yearbook-form,
-#yearbook-owner-screen .yearbook-form,
-#yearbook-clients-screen .yearbook-form,
-#pf-container-2025,
-#pf-container-2026 {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  margin: 0 auto;
-  box-sizing: border-box;
+#yearbook-owner-screen .yearbook-form {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
 }
 
-/* Cards must never exceed parent width */
-.yb-hero,
-.yb-card {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+/* 3. Remove the 340px login-form max-width so cards fill the space */
+#yearbook-authorize-screen .form-section,
+#yearbook-owner-screen .form-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
 }
 
-/* Fix hero row flex overflow: text column can now shrink */
-.yb-hero-row {
-  flex-wrap: nowrap;
-  min-width: 0;
-}
-.yb-hero-row > div:last-child {
-  min-width: 0;
-  flex: 1;
-}
-.yb-hero-title,
-.yb-hero-sub {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  max-width: 100%;
+/* 4. Hero card: remove extra bottom margin so gap is consistent */
+#yearbook-authorize-screen .yb-hero,
+#yearbook-owner-screen .yb-hero {
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Fix card title and content overflow */
-.yb-card-title {
-  flex-wrap: wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  max-width: 100%;
+/* 5. All white cards: force full width and equal margins */
+#yearbook-authorize-screen .yb-card,
+#yearbook-owner-screen .yb-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
 }
 
-/* Ensure all form elements in cards are fully responsive */
-.yb-card .input-group,
-.yb-card .form-input,
-.yb-card .form-select,
-.yb-card textarea,
-.yb-card label {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
+/* 6. Inputs, photo boxes, QR boxes, and iframes stay contained */
+#yearbook-authorize-screen .input-group,
+#yearbook-owner-screen .input-group,
+#yearbook-authorize-screen .form-input,
+#yearbook-owner-screen .form-input {
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* QR display must not overflow its card */
-.yb-qr-display {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-.yb-qr-frame {
-  max-width: 100%;
-  width: min(180px, 60vw);
-  height: min(180px, 60vw);
-  box-sizing: border-box;
+#yearbook-authorize-screen .yb-photo-box,
+#yearbook-owner-screen .yb-photo-box,
+#yearbook-authorize-screen .yb-qr-display,
+#yearbook-owner-screen .yb-qr-display,
+#yearbook-authorize-screen #yb-auth-iframe-wrap,
+#yearbook-owner-screen #yb-owner-iframe-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Photo box keeps aspect ratio but scales down */
-.yb-photo-box {
-  width: 100%;
-  max-width: 100%;
-  min-height: clamp(100px, 30vw, 160px);
+/* 7. Submit button matches card width */
+#yearbook-authorize-screen .btn,
+#yearbook-owner-screen .btn {
+  width: 100% !important;
 }
 
-/* Picture frames containers */
-#pf-container-2025 .yb-card,
-#pf-container-2026 .yb-card {
-  width: 100%;
-  max-width: 100%;
-}
-
-/* ---- Small screen tweaks (<= 400px) ---- */
-@media (max-width: 400px) {
-  .yb-hero {
-    padding: 18px 14px;
-    border-radius: 18px;
-    margin-bottom: 12px;
-  }
-  .yb-card {
-    padding: 14px;
-    border-radius: 16px;
-    gap: 10px;
-  }
-  .yb-hero-row {
-    gap: 10px;
-  }
-  .yb-hero-badge {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-  }
-  .yb-hero-badge svg {
-    width: 20px;
-    height: 20px;
-  }
-  .yb-hero-title {
-    font-size: 16px;
-  }
-  .yb-hero-sub {
-    font-size: 11px;
-  }
-  .yb-hero-chip {
-    margin-top: 10px;
-    padding: 5px 10px;
-    font-size: 10px;
-  }
-  .yb-card-title {
-    font-size: 12px;
-    margin-bottom: 0;
-  }
-  .yb-qr-display {
-    padding: 12px;
-  }
-  .yb-qr-frame {
-    width: min(160px, 55vw);
-    height: min(160px, 55vw);
-    padding: 8px;
-  }
-  .yb-qr-caption {
-    font-size: 11px;
-  }
-  .yb-photo-box {
-    min-height: 140px;
-  }
-  #yearbook-authorize-screen .sub-content,
-  #yearbook-owner-screen .sub-content,
-  #yearbook-clients-screen .sub-content {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-}
-
-/* ---- Extra small screens (<= 360px) ---- */
+/* 8. Small-screen adjustments */
 @media (max-width: 360px) {
-  .yb-hero {
-    padding: 16px 12px;
-    border-radius: 16px;
+  #yearbook-authorize-screen .sub-content,
+  #yearbook-owner-screen .sub-content {
+    padding: 12px !important;
   }
-  .yb-card {
-    padding: 12px;
-    border-radius: 14px;
-    gap: 8px;
-  }
-  .yb-hero-badge {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-  }
-  .yb-hero-title {
-    font-size: 15px;
-  }
-  .yb-hero-sub {
-    font-size: 10px;
-  }
-  .yb-qr-frame {
-    width: min(140px, 50vw);
-    height: min(140px, 50vw);
-  }
-  .yb-photo-box {
-    min-height: 120px;
-  }
-}
 
-/* ---- Very narrow screens (<= 320px) ---- */
-@media (max-width: 320px) {
-  .yb-hero {
-    padding: 14px 10px;
+  #yearbook-authorize-screen .yb-card,
+  #yearbook-owner-screen .yb-card {
+    padding: 14px !important;
+    gap: 12px !important;
+    border-radius: 14px !important;
   }
-  .yb-card {
-    padding: 10px;
-  }
-  .yb-hero-title {
-    font-size: 14px;
-  }
-  .yb-qr-frame {
-    width: 120px;
-    height: 120px;
+
+  #yearbook-authorize-screen .yb-hero,
+  #yearbook-owner-screen .yb-hero {
+    padding: 14px 12px !important;
+    border-radius: 16px !important;
   }
 }
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
