@@ -4,7 +4,7 @@ const SHELL = [
   './index.html'
 ];
 
-// Install
+// Install: cache app shell
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL))
@@ -12,31 +12,35 @@ self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
-// Activate
+// Activate: clean old caches
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+      )
     )
   );
   self.clients.claim();
 });
 
-// Fetch
+// Fetch: serve cached, fallback to network
+// NEVER cache Google Apps Script API calls
 self.addEventListener('fetch', (e) => {
-  // Never cache Google Apps Script API calls
   if (e.request.url.includes('script.google.com')) {
     return;
   }
 
   e.respondWith(
     caches.match(e.request).then((r) => {
-      return r || fetch(e.request).catch(() => {
-        // Offline fallback
-        if (e.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return (
+        r ||
+        fetch(e.request).catch(() => {
+          if (e.request.mode === 'navigate') {
+            return caches.match('./index.html');
+          }
+        })
+      );
     })
   );
 });
