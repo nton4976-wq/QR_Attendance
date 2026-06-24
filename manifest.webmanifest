@@ -1,0 +1,21 @@
+{
+  "name": "Cares Attendance Monitoring",
+  "short_name": "Cares Attendance",
+  "start_url": "/attendance/",
+  "scope": "/attendance/",
+  "display": "fullscreen",
+  "background_color": "#0f172a",
+  "theme_color": "#0b5d1e",
+  "icons": [
+    {
+      "src": "/attendance/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/attendance/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
