@@ -3495,6 +3495,246 @@ textarea.form-input::placeholder,
   color: var(--text-light);
   opacity: 0.7;
 }
+/* ===== YEARBOOK & PICTURE FRAMES RESPONSIVE CARD FIXES ===== */
+
+/* Prevent inline yearbook screens from overflowing their tab container */
+#yearbook-authorize-screen,
+#yearbook-owner-screen,
+#tab-yearbook,
+#tab-picture-frames {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Fix the sub-header background so it adapts to dark mode and never overflows */
+#yearbook-authorize-screen .sub-header,
+#yearbook-owner-screen .sub-header,
+#yearbook-clients-screen .sub-header {
+  width: 100%;
+  max-width: 100%;
+  background: var(--white);
+  color: var(--text-dark);
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+#yearbook-authorize-screen .sub-header h2,
+#yearbook-owner-screen .sub-header h2,
+#yearbook-clients-screen .sub-header h2 {
+  font-size: clamp(14px, 4vw, 16px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Constrain sub-content so cards sit flush without side-scroll */
+#yearbook-authorize-screen .sub-content,
+#yearbook-owner-screen .sub-content,
+#yearbook-clients-screen .sub-content {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+/* Force yearbook forms to stay within the tab width */
+#yearbook-authorize-screen .yearbook-form,
+#yearbook-owner-screen .yearbook-form,
+#yearbook-clients-screen .yearbook-form,
+#pf-container-2025,
+#pf-container-2026 {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Cards must never exceed parent width */
+.yb-hero,
+.yb-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Fix hero row flex overflow: text column can now shrink */
+.yb-hero-row {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.yb-hero-row > div:last-child {
+  min-width: 0;
+  flex: 1;
+}
+.yb-hero-title,
+.yb-hero-sub {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* Fix card title and content overflow */
+.yb-card-title {
+  flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* Ensure all form elements in cards are fully responsive */
+.yb-card .input-group,
+.yb-card .form-input,
+.yb-card .form-select,
+.yb-card textarea,
+.yb-card label {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* QR display must not overflow its card */
+.yb-qr-display {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.yb-qr-frame {
+  max-width: 100%;
+  width: min(180px, 60vw);
+  height: min(180px, 60vw);
+  box-sizing: border-box;
+}
+
+/* Photo box keeps aspect ratio but scales down */
+.yb-photo-box {
+  width: 100%;
+  max-width: 100%;
+  min-height: clamp(100px, 30vw, 160px);
+}
+
+/* Picture frames containers */
+#pf-container-2025 .yb-card,
+#pf-container-2026 .yb-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ---- Small screen tweaks (<= 400px) ---- */
+@media (max-width: 400px) {
+  .yb-hero {
+    padding: 18px 14px;
+    border-radius: 18px;
+    margin-bottom: 12px;
+  }
+  .yb-card {
+    padding: 14px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+  .yb-hero-row {
+    gap: 10px;
+  }
+  .yb-hero-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+  .yb-hero-badge svg {
+    width: 20px;
+    height: 20px;
+  }
+  .yb-hero-title {
+    font-size: 16px;
+  }
+  .yb-hero-sub {
+    font-size: 11px;
+  }
+  .yb-hero-chip {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  .yb-card-title {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+  .yb-qr-display {
+    padding: 12px;
+  }
+  .yb-qr-frame {
+    width: min(160px, 55vw);
+    height: min(160px, 55vw);
+    padding: 8px;
+  }
+  .yb-qr-caption {
+    font-size: 11px;
+  }
+  .yb-photo-box {
+    min-height: 140px;
+  }
+  #yearbook-authorize-screen .sub-content,
+  #yearbook-owner-screen .sub-content,
+  #yearbook-clients-screen .sub-content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* ---- Extra small screens (<= 360px) ---- */
+@media (max-width: 360px) {
+  .yb-hero {
+    padding: 16px 12px;
+    border-radius: 16px;
+  }
+  .yb-card {
+    padding: 12px;
+    border-radius: 14px;
+    gap: 8px;
+  }
+  .yb-hero-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  .yb-hero-title {
+    font-size: 15px;
+  }
+  .yb-hero-sub {
+    font-size: 10px;
+  }
+  .yb-qr-frame {
+    width: min(140px, 50vw);
+    height: min(140px, 50vw);
+  }
+  .yb-photo-box {
+    min-height: 120px;
+  }
+}
+
+/* ---- Very narrow screens (<= 320px) ---- */
+@media (max-width: 320px) {
+  .yb-hero {
+    padding: 14px 10px;
+  }
+  .yb-card {
+    padding: 10px;
+  }
+  .yb-hero-title {
+    font-size: 14px;
+  }
+  .yb-qr-frame {
+    width: 120px;
+    height: 120px;
+  }
+}
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <base target="_blank">
 <base target="_blank">
