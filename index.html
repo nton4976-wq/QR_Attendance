@@ -3611,6 +3611,25 @@ textarea.form-input::placeholder,
 </head>
 <body>
 <div id="app">
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash-screen" class="screen active">
+  <div class="splash-content">
+    <svg class="logo-large" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="26" stroke="#fff" stroke-width="2.5"/>
+      <path d="M30 12 L30 30 L40 37" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="30" cy="30" r="4" fill="#fff"/>
+    </svg>
+    <div class="logo-text">
+      <span class="time-text">TIME</span>
+      <span class="attendance-text">Attendance</span>
+    </div>
+    <div class="splash-loader"></div>
+    <div id="splash-status" style="margin-top:24px;font-size:13px;font-weight:500;opacity:0.85;letter-spacing:0.5px;">Preparing your workspace...</div>
+    <div id="splash-progress" style="margin-top:12px;width:200px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;">
+      <div id="splash-progress-bar" style="width:0%;height:100%;background:#fff;border-radius:2px;transition:width 0.3s ease;"></div>
+    </div>
+  </div>
+</div>
 <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div><p style="font-size:13px;color:var(--text-medium)">Processing...</p></div>
 <div id="error-toast" class="error-toast"></div>
 <div id="sync-badge">Syncing...</div>
@@ -4756,7 +4775,7 @@ textarea.form-input::placeholder,
 </div>
 
 <script>
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyjOOj6UAcuRFehUuzXv4ENvV4RX8OtCeCtY3W4989OYCblfbD_O4p9sWO_vihWU5vS7g/exec'; // TODO: Replace with your deployed GAS Web App URL (e.g., https://script.google.com/macros/s/.../exec)
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzOgQvckGFTHwhp5AUGEpC4mdMZ0vhOgIn82iOrdGQu_GqmYKNsYleRo0BAo5nPkGm4eQ/exec'; // TODO: Replace with your deployed GAS Web App URL (e.g., https://script.google.com/macros/s/.../exec)
 var currentUser = null, currentScreen = 'splash-screen', sessionState = 'morning-in';
 var morningInTime = null, morningOutTime = null, afternoonInTime = null, afternoonOutTime = null;
 var currentYear = new Date().getFullYear(), currentMonth = new Date().getMonth(), selectedDate = new Date().getDate();
@@ -4777,7 +4796,76 @@ function formatDate(date){return date.getFullYear()+'-'+String(date.getMonth()+1
 function getDateKey(){return formatDate(new Date())}
 function getTimeValue(){var n=new Date(); return n.getHours()*60+n.getMinutes()}
 function formatChatTime(date){var now=new Date(); var diff=now-date; if(diff<60000)return'Just now'; if(diff<3600000)return Math.floor(diff/60000)+'m ago'; if(diff<86400000)return Math.floor(diff/3600000)+'h ago'; if(diff<604800000)return Math.floor(diff/86400000)+'d ago'; return date.toLocaleDateString()}
+function parseTime(timeStr){
+  if(!timeStr || timeStr==='--:--' || timeStr==='-') return null;
+  var parts = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
+  if(!parts) return null;
+  var h = parseInt(parts[1],10), m = parseInt(parts[2],10);
+  if(parts[3].toLowerCase()==='pm' && h!==12) h+=12;
+  if(parts[3].toLowerCase()==='am' && h===12) h=0;
+  var d = new Date();
+  d.setHours(h,m,0,0);
+  return d;
+}
 
+function deriveSessionStateFromRecords(){
+  var todayKey = getDateKey();
+  var rec = attendanceRecords[todayKey] || {};
+  morningInTime = rec.morningIn ? parseTime(rec.morningIn) : null;
+  morningOutTime = rec.morningOut ? parseTime(rec.morningOut) : null;
+  afternoonInTime = rec.afternoonIn ? parseTime(rec.afternoonIn) : null;
+  afternoonOutTime = rec.afternoonOut ? parseTime(rec.afternoonOut) : null;
+  if(rec.afternoonOut) sessionState = 'complete';
+  else if(rec.afternoonIn) sessionState = 'afternoon-out';
+  else if(rec.morningOut) sessionState = 'afternoon-in';
+  else if(rec.morningIn) sessionState = 'morning-out';
+  else sessionState = 'morning-in';
+  var el;
+  el=document.getElementById('stat-morning-in'); if(el) el.textContent=rec.morningIn||'--:--';
+  el=document.getElementById('stat-morning-out'); if(el) el.textContent=rec.morningOut||'--:--';
+  el=document.getElementById('stat-afternoon-in'); if(el) el.textContent=rec.afternoonIn||'--:--';
+  el=document.getElementById('stat-afternoon-out'); if(el) el.textContent=rec.afternoonOut||'--:--';
+  el=document.getElementById('stat-working'); if(el) el.textContent=rec.workingHours||'--:--';
+  el=document.getElementById('stat-overtime'); if(el) el.textContent=(rec.overtime==='Yes'||rec.overtime===true)?'Yes':'No';
+  updateButtonForState();
+  updateSmartBanner();
+}
+
+function showSplashAndLoadData(){
+  navigateTo('splash-screen');
+  var statusEl = document.getElementById('splash-status');
+  var barEl = document.getElementById('splash-progress-bar');
+  var steps = [
+    { name: 'User Profile', action: function(done){ updateProfileUI(); done(); } },
+        { name: 'Attendance Records', action: function(done){ loadAttendanceFromServer(function(){ deriveSessionStateFromRecords(); saveDailyState(); done(); }); } },
+    { name: 'Team Directory', action: function(done){ loadTeamFromServer(done); } },
+    { name: 'Conversations', action: function(done){ loadConversations(done); } },
+    { name: 'Activities', action: function(done){ syncActivitiesFromServer(done); } },
+    { name: 'Yearbook Records', action: function(done){ syncYearbookFromServer(done); } },
+    { name: 'Picture Frames', action: function(done){ syncPictureFramesFromServer(done, '2025'); } },
+    { name: 'Work Summary', action: function(done){ loadSummaryFromServer(done); } }
+  ];
+  var current = 0;
+  function next(){
+    if(current >= steps.length){
+      if(statusEl) statusEl.textContent = 'Ready!';
+      if(barEl) barEl.style.width = '100%';
+      setTimeout(function(){
+        navigateTo('home-screen');
+        startLiveTimer();
+        startChatPolling();
+        requestNotificationPermission();
+      }, 600);
+      return;
+    }
+    var step = steps[current];
+    if(statusEl) statusEl.textContent = 'Loading ' + step.name + '...';
+    if(barEl) barEl.style.width = Math.round((current / steps.length) * 100) + '%';
+    current++;
+    step.action(next);
+  }
+  next();
+}
 function sha256(str){return new Promise(function(resolve){try{if(!window.crypto||!crypto.subtle){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2));return} crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)).then(function(hash){resolve(Array.from(new Uint8Array(hash)).map(function(b){return b.toString(16).padStart(2,'0')}).join(''))}).catch(function(){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2))})}catch(e){resolve('fallback_'+str+'_'+Math.random().toString(36).slice(2))}})}
 
 function queueOfflineAction(action,data){offlineQueue.push({action:action,data:data,timestamp:new Date().toISOString()}); try{localStorage.setItem('offlineQueue',JSON.stringify(offlineQueue))}catch(e){} updateSyncBadge()}
@@ -4910,19 +4998,12 @@ function doLogin(){
         currentUser=resp.user;
         try{localStorage.setItem('timeAttendanceUser',JSON.stringify(currentUser))}catch(e){}
         updateProfileUI();
-        navigateTo('home-screen');
-        setTimeout(function(){
-          loadAttendanceFromServer();
-          loadTeamFromServer();
-          loadConversations();
-          requestNotificationPermission();
-        },100);
+        showSplashAndLoadData();
       }
       else showError(resp.error||'Login failed');
     })
   })
 }
-
 function doLogout(){
   if(confirm('Are you sure you want to log out?')){
     currentUser=null;
@@ -5293,24 +5374,28 @@ function updateLocalAttendance(data){
   renderCalendar(); renderAttendanceList(); updateProfileStats();
 }
 
-function loadAttendanceFromServer(){
-  if(!currentUser) return;
+function loadAttendanceFromServer(callback){
+  callback = callback || function(){};
+  if(!currentUser) return callback();
   apiCall('getAttendance',{userId:currentUser.userId,email:currentUser.email},function(resp){
     try{
       if(resp.success && resp.records && resp.records.length > 0){
-        // Preserve today's local record before merging so unsynced clock data isn't lost
         var todayKey = getDateKey();
         var todayLocal = attendanceRecords[todayKey] ? JSON.parse(JSON.stringify(attendanceRecords[todayKey])) : null;
         attendanceRecords={};
         for(var i=0;i<resp.records.length;i++){
           var r=resp.records[i];
           attendanceRecords[r.date]={
-            status:r.status,morningIn:r.morningIn,morningOut:r.morningOut,
-            afternoonIn:r.afternoonIn,afternoonOut:r.afternoonOut,
-            method:r.method,overtime:r.overtime==='Yes'
+            status:r.status,
+            morningIn:r.morningIn,
+            morningOut:r.morningOut,
+            afternoonIn:r.afternoonIn,
+            afternoonOut:r.afternoonOut,
+            method:r.method,
+            overtime:r.overtime==='Yes',
+            workingHours:r.workingHours || ''
           };
         }
-        // Merge back any local-only fields for today that the server doesn't have yet
         if(todayLocal){
           if(!attendanceRecords[todayKey]) attendanceRecords[todayKey]={};
           var srv=attendanceRecords[todayKey];
@@ -5321,12 +5406,12 @@ function loadAttendanceFromServer(){
           if(todayLocal.status) srv.status=todayLocal.status;
           if(todayLocal.overtime) srv.overtime=todayLocal.overtime;
         }
-        renderCalendar(); renderAttendanceList(); updateProfileStats(); updateButtonForState();
+                renderCalendar(); renderAttendanceList(); updateProfileStats();
       }
     }catch(e){console.error(e)}
-  }, false); // show loading
+    callback();
+  }, false);
 }
-
 function isWeekend(){var d=new Date().getDay(); return d===0||d===6}
 
 function updateButtonForState(){
@@ -5404,8 +5489,9 @@ function updateProfileStats(){
   el=document.getElementById('summary-overtime'); if(el) el.textContent=overtime+' OT';
 }
 
-function loadSummaryFromServer(){
-  if(!currentUser) return;
+function loadSummaryFromServer(callback){
+  callback = callback || function(){};
+  if(!currentUser) return callback();
   apiCall('getSummary', { userId: currentUser.userId, email: currentUser.email }, function(resp){
     if(resp.success && resp.summary){
       var s = resp.summary;
@@ -5416,6 +5502,7 @@ function loadSummaryFromServer(){
       el=document.getElementById('stat-late'); if(el) el.textContent=s.lateCount || 0;
       el=document.getElementById('stat-overtime-count'); if(el) el.textContent=s.overtimeCount || 0;
     }
+    callback();
   }, true);
 }
 
@@ -5569,9 +5656,9 @@ function renderAttendanceList(){
   for(var i=0;i<keys.length;i++){
     var dateKey=keys[i], data=attendanceRecords[dateKey], parts=dateKey.split('-'), dayNum=parseInt(parts[2],10), monthNum=parseInt(parts[1],10);
     var dayLabel=dayNum+' '+monthNames[monthNum-1], statusClass=data.status?data.status.toLowerCase():'present';
-    var workingHours=calculateWorkingHours(data);
+    var workingHours = data.workingHours || calculateWorkingHours(data);
     var row=document.createElement('div'); row.className='list-row';
-    row.innerHTML='<span class="date">'+dayLabel+'</span><span class="status '+statusClass+'">'+(data.status||'Present')+'</span><span class="time">'+(data.morningIn||'-')+'</span><span class="time">'+(data.morningOut||'-')+'</span><span class="time">'+(data.afternoonIn||'-')+'</span><span class="time">'+(data.afternoonOut||'-')+'</span><span class="time">'+workingHours+'</span><button class="edit-btn" onclick="showError(\'Edit requires supervisor approval\')" aria-label="Edit attendance"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>';
+    row.innerHTML='<span class="date">'+dayLabel+'</span><span class="status '+statusClass+'">'+(data.status||'Present')+'</span><span class="time">'+(data.morningIn||'-')+'</span><span class="time">'+(data.morningOut||'-')+'</span><span class="time">'+(data.afternoonIn||'-')+'</span><span class="time">'+(data.afternoonOut||'-')+'</span><span class="time">'+(workingHours||'-')+'</span><button class="edit-btn" onclick="showError(\'Edit requires supervisor approval\')" aria-label="Edit attendance"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>';
     container.appendChild(row);
   }
 }
@@ -5709,9 +5796,9 @@ function renderConversationsList() {
   container.innerHTML = html;
 }
 
-function loadConversations() {
-  if (!currentUser) return;
-  
+function loadConversations(callback) {
+  callback = callback || function(){};
+  if (!currentUser) return callback();
   apiCall('getConversations', { email: currentUser.email }, function(resp) {
     if (resp.success && resp.conversations) {
       conversations = resp.conversations;
@@ -5720,6 +5807,7 @@ function loadConversations() {
       }
       updateChatBadge();
     }
+    callback();
   }, true);
 }
 
@@ -6113,8 +6201,9 @@ function getColorForString(str) {
   return colors[Math.abs(hash) % colors.length];
 }
 
-function loadTeamFromServer() {
-  if (!currentUser) return;
+function loadTeamFromServer(callback) {
+  callback = callback || function(){};
+  if (!currentUser) return callback();
   apiCall('getTeam', { email: currentUser.email }, function(resp) {
     try {
       if (resp.success && resp.team) {
@@ -6132,6 +6221,7 @@ function loadTeamFromServer() {
         renderTeamList();
       }
     } catch (e) { console.error(e); }
+    callback();
   }, false);
 }
 
@@ -6376,41 +6466,28 @@ document.addEventListener('DOMContentLoaded',function(){
     try{storedQueue=localStorage.getItem('offlineQueue')}catch(e){}
     if(storedQueue){try{offlineQueue=JSON.parse(storedQueue)}catch(e){}}
     loadActivities();
-    loadDailyState();
     loadSettings();
-
     updateSyncBadge();
     var isLoggedIn=checkLoggedIn();
-    setTimeout(function(){
-      if(isLoggedIn){
-        navigateTo('home-screen');
-        setTimeout(function(){
-          loadAttendanceFromServer();
-          loadTeamFromServer();
-          loadConversations();
-          loadSummaryFromServer();
-          syncActivitiesFromServer();
-          requestNotificationPermission();
-          startChatPolling();
-        },100);
-      } else {
-        navigateTo('login-screen');
-      }
-    },1500);
+    if(isLoggedIn){
+      showSplashAndLoadData();
+    } else {
+      navigateTo('login-screen');
+    }
     updateTime();
     setInterval(updateTime,1000);
-    renderCalendar();
-    updateButtonForState();
-    processOfflineQueue();
-    window.addEventListener('online',function(){showSuccessModal('Back Online','Syncing pending data...'); processOfflineQueue()});
+    window.addEventListener('online',function(){
+      showSuccessModal('Back Online','Syncing pending data...');
+      processOfflineQueue();
+    });
     window.addEventListener('offline',function(){showError('You are offline. Data will be saved locally.')});
     window.addEventListener('popstate',handleBackButton);
     setInterval(checkReminders,60000);
   }catch(e){
     console.error('FATAL init error:',e);
-    document.getElementById('splash-screen').classList.add('active');
+    navigateTo('login-screen');
   }
-  // ADD THESE LINES:  
+  
   var pf26Balance = document.getElementById('pf-2026-balance');
   var pf26Paid = document.getElementById('pf-2026-amount-paid');
   var pf26Status = document.getElementById('pf-2026-status');
@@ -6418,7 +6495,6 @@ document.addEventListener('DOMContentLoaded',function(){
   if(pf26Paid) pf26Paid.addEventListener('input', calculatePF2026Balance);
   if(pf26Status) pf26Status.addEventListener('change', calculatePF2026Balance);
 });
-
 
 function manualRefreshChat() {
   if (!currentUser || !currentChatPartner) return;
